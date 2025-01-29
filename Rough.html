@@ -1,0 +1,3324 @@
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christian Webpage</title>    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Include stylesheet -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+                    <!-- Navbar and Verse  -->
+    <style>
+
+        /*   Global     */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            /* background: linear-gradient(to bottom, #e6f2ff, #e6e6ff);*/
+            /* box-shadow: 0px 1px 8px 0px rgb(65 65 65 / 35%);*/
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .background-gray {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .background-grey {
+             background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+        }
+
+                                                    /*   LOGO    */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(46, 113, 117, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            /* padding: 0.5rem;*/
+            margin-bottom: 1rem;
+            padding: 10px 20px;
+        }
+
+
+        .navbar-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+
+            background: rgba(46, 113, 117, 0.95);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 90px;
+            z-index: 999;
+        }
+
+        .side-panel a {
+            padding: 10px 0;
+            text-align: center;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .side-panel a:hover {
+            background-color: #575757;
+        }
+
+        .side-panel.open {
+            left: 0;
+        }
+
+        .content {
+            transition: margin-left 0.5s;
+        }
+
+        .content.shift {
+            margin-left: 250px;
+        }
+
+         @media (max-width: 768px) {
+            .side-panel {
+                width: 30%; /* Full width on small screens */
+                left: -100%; /* Hide completely off-screen */
+            }
+
+            .side-panel.open {
+                left: 0; /* Bring into view */
+            }
+
+            .content.shift {
+                margin-left: 30%; /* No shift on small screens */
+            }
+        }
+
+        @media (min-width: 769px) {
+            .side-panel {
+                width: 250px; /* Fixed width on larger screens */
+                left: -250px; /* Hide off-screen */
+            }
+
+            .side-panel.open {
+                left: 0; /* Bring into view */
+            }
+
+            .content.shift {
+                margin-left: 250px; /* Shift content on larger screens */
+            }
+        }
+
+        .logo-container {
+            margin-left: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            padding: 0 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        .site-title {
+            font-size: 1.85rem;
+            font-weight: 600;
+            color: white;
+            margin: 0.7rem;
+        }
+
+                                                    /*  verse of the day */                                                    
+        main {
+            margin-top: 4rem;
+            padding-bottom: 2rem;
+        }
+
+        .verse-section {
+            padding: 1.2rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .verse-title {
+            text-align: center;
+            color: #1e40af;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+
+        .verse-container {
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f9fafb;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+
+        .verse-text {
+            font-family: 'Anek Telugu', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .verse-reference {
+            text-align: right;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #2563eb;
+        }
+
+        .verse-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .verse-button {
+            /*   background: linear-gradient(135deg, #4CAF50, #2E7D32); */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verse-button:hover {
+            background: linear-gradient(135deg, #2E7D32, #1B5E20); /* Darker green on hover */
+            transform: scale(1.05);
+        }
+
+        .verse-button:active {
+            transform: scale(0.95);
+        }
+
+        .verse-button.off {
+        /*   background: linear-gradient(135deg, #D32F2F, #B71C1C); /* Red gradient */*/
+        }
+
+        .verse-button.off:hover {
+            background: linear-gradient(135deg, #B71C1C, #880E4F); /* Darker red on hover */
+        }
+
+
+
+                /* Global Responsive Styles */
+        @media (max-width: 768px) {
+
+
+            /* Logo Responsive */
+            .logo-container {
+                margin-left: 0px;
+            }
+
+            .site-title {
+                font-size: 1.6rem;
+            }
+
+            /* Verse Component Responsive */
+            .verse-container {
+                padding: 1.5rem;
+                margin: 0px 10px;
+
+            }
+
+            .verse-title {
+                font-size: 1.7rem;
+            }
+
+            .verse-text {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+
+            .verse-button {
+                font-size: 0.9rem;
+                padding: 0.35rem 0.7rem;
+            }
+
+        }
+    </style>
+
+                            <!-- Video Component -->
+    <style>
+        .video-header {
+            padding: 2rem 0px 0.5rem 0px;
+            text-align: center;
+        }
+
+        .video-header h1 {
+            color: #1a1a1a;
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .video-header p {
+            color: #7f8c8d;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+      .yt-container {
+        max-width: 800px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .yt-video-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 1px 8px 0px rgb(65 65 65 / 35%);
+        padding: 15px;
+        margin-bottom: 15px;
+        position: relative;
+      }
+      .video-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+        background: #6d28d947;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .video-info h2 {
+        margin: 0px;
+        font-size: 1.2rem;
+        flex-grow: 1;
+      }
+
+      .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+      .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .yt-container {
+            padding: 1.2rem 0;
+            margin: 0px 10px;
+        }
+        .yt-video-container {
+          padding: 10px;
+        }
+        .video-info h2 {
+          font-size: 1rem;
+        }
+        .video-wrapper {
+          margin: 10px 0;
+        }
+        .scrolling-text-container {
+          height: 30px;
+          line-height: 30px;
+          margin-bottom: 15px;
+        }
+      }
+
+      .info-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20vh;
+        background: #e6ffff;
+        padding: 60px 10px 40px;
+        border-radius: 5px;
+        color: #960a0a;
+      }
+      .contact-group {
+        padding: 10px;
+        background: #c9e2f8;
+        text-align: center;
+        border-radius: 6px;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .contact-group i {
+        margin-left: 10px;
+      }
+      .node-call-icon {
+        font-size: 14px;
+      }
+      .node-chat-icon {
+        font-size: 17px;
+      }
+
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Centers the buttons vertically */
+            position: relative; /* Needed for absolute positioning of the "Keep Notes" button */
+            width: 100%; /* Ensure the container takes full width */
+            gap: 1rem;
+            margin: 15px 0px;
+        }
+
+        .button-group  button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+
+
+        .keep-notes-btn {
+            position: absolute;
+            right: 0; /* Positions the button at the right side */
+            top: 50%; /* Centers the button vertically */
+            transform: translateY(-50%); /* Fine-tunes vertical centering */
+        }
+
+         /* .keep-notes-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }*/
+      /* Parent container styling */
+      #notes-container {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+      }
+
+       #notes-container.active {
+            display: flex;
+        }
+
+
+      /* Quill editor styling */
+      #video-notes {
+        height: 200px;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* Save button styling */
+      .save-button {
+        align-self: flex-end;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .save-button:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 480px) {
+
+        .button-group  button {
+            font-size: 12px;
+            margin: 0px;
+        }
+
+      }
+    </style>
+
+                             <!-- Image Quiz  -->
+    <style>
+
+       :root {
+            --primary-color: #2563eb;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --text-color: #1f2937;
+            --bg-color: #ffffff;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0rem auto;
+            padding-bottom: 3rem;
+        }
+
+        .quiz-intro {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0px 1px 8px 0px rgb(65 65 65 / 35%);
+        }
+
+        .action-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-button.off {
+        /*  background-color: #f1f2f6;*/
+        /*  color: #666;*/
+        }
+
+        .action-button.on {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .quiz-preview {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .preview-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+
+        .preview-question {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .start-quiz-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 0 auto;
+        }
+
+        .start-quiz-btn:hover {
+            background: var(--success-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(-20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+        }
+
+        .quiz-modal {
+            display: none;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+        }
+
+        .quiz-modal-content {
+            background: var(--bg-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            position: relative;
+            width: 30%;
+            height: 95vh;
+            overflow-y: auto;
+            padding: 0 1.5rem;
+            margin: 5rem auto;
+        }
+
+        .quiz-modal-header {
+            padding: 0.5rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-modal-title {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            transition: var(--transition);
+        }
+
+        .close-btn:hover {
+            color: var(--text-color);
+        }
+
+        .quiz-modal-body {
+            padding: 1rem 0;
+        }
+
+        .quiz-progress-container {
+            margin-bottom: 1rem;
+        }
+
+        .quiz-progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: block;
+            text-align: center;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .quiz-question-container {
+            text-align: center;
+        }
+
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .question-text {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .option-btn {
+            background: var(--bg-color);
+            border: 2px solid #e5e7eb;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-color);
+            background: #f8fafc;
+        }
+
+        .feedback-container {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+        }
+
+        .feedback-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .next-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .next-btn:hover {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            transform: translateX(10px);
+
+        }
+
+        .results-container {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+
+            .quiz-intro {
+                margin: 0px 10px;
+            }
+
+            .quiz-modal-content {
+                width: 95%;
+                height: 80%;
+                padding: 1rem;
+                margin: 10rem auto;
+            }
+        }
+    </style>
+    
+                            <!--   Bible Books    -->
+    <style>
+        .bible {
+            padding-bottom: 2rem;
+        }
+
+         .books-header {
+            text-align: center;
+            padding-top: 2rem;
+        }
+
+        .books-header h1 {
+            color: #1a1a1a;
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .books-header p {
+            color: #7f8c8d;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .books-container {
+            background-color: white;
+            padding: 2px 20px;
+            max-width: 800px;
+            margin: 10px auto;
+            border-radius: 12px;
+        }
+
+        .bible-books {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .bible-book {
+          background: #f8f9fa;
+              text-align: center;
+            width: 50%;
+            margin: auto;
+        }
+
+        .progress-container {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #2196f3;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-button,
+        .quiz-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button {
+            background: #f0f0f0;
+        }
+
+        .quiz-button {
+            background: #2196f3;
+            color: white;
+        }
+
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .books-modal-content {
+            background: white;
+            max-width: 600px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .time {
+            text-align: right;
+        }
+
+        .quiz-option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #eee;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover:not([disabled]) {
+            background: #f8f9fa;
+        }
+
+        .quiz-option.correct {
+            background: #4caf50;
+            color: white;
+        }
+
+        .quiz-option.wrong {
+            background: #f44336;
+            color: white;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .books-container {
+            margin: 0px 10px;
+
+            }
+        }
+    </style>
+
+                            <!-- Testimonials, Events and about us -->
+    <style>
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+                    /* Testimonials Section */
+
+
+        .section-title {
+            padding: 2rem 0px 1rem 0px;
+            text-align: center;
+        }
+
+
+        .testimonials {
+            padding-bottom: 3rem;
+        }
+
+        .testimonials-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+
+        .testimonial-card {
+            min-width: 96%;
+            background: white;
+            backdrop-filter: blur(8px);
+            padding: 20px; 
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+            margin: 0rem 1rem;
+        }
+
+        .testimonial-content {
+            font-size: 1rem; /* Slightly reduced font size for smaller screens */
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .testimonial-author h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+
+        .testimonial-author p {
+            font-size: 0.875rem;
+            color: gray;
+        }
+
+        .author-image {
+            width: 45px; /* Slightly smaller for smaller screens */
+            height: 45px;
+            border-radius: 50%;
+            margin-right: 10px; /* Reduced margin */
+            background: #ddd;
+        }
+        .testimonial-author h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-author p {
+            font-size: 0.875rem;
+            color: gray;
+        }
+
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            font-weight: 800;
+        }
+
+        .carousel-btn.left {
+            left: 0px;
+        }
+
+        .carousel-btn.right {
+            right: 0px;
+        }
+
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+
+                        /* Events Carousel */
+        .events-carousel {
+            padding: 0.5rem 0 5rem 0;
+        }
+
+        .carousel-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 0 15px;
+        }
+
+        .event-card {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .event-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image fits correctly */
+        }
+
+        .carousel-buttons {
+            position: absolute;
+            top: 60%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-button {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-button:hover {
+            background: rgba(0,0,0,0.8);
+        }
+
+                /* About Us Section */
+        .about-us {
+            padding: 40px 20px;
+
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            background: #ddd;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .about-content {
+            padding: 20px;
+        }
+
+        .about-content h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        .about-content p {
+            color: #64748b;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4f46e5;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+            .testimonials-container {
+                margin: 0px 10px;
+            }
+            .testimonial-card {
+                margin: 0px 10px;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+
+                            <!-- prayer component -->
+    <style>
+        .prayer {
+            padding: 2rem 0;
+        }
+        .prayer_form_container {
+            max-width: 600px;
+            margin: 0px auto;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .prayer_form_title {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .prayer_form_group {
+            margin-bottom: 20px;
+        }
+
+        .prayer_form_label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 500;
+        }
+
+        .prayer_form_input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .prayer_form_textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            min-height: 120px;
+            font-size: 15px;
+            resize: vertical;
+        }
+
+        .prayer_form_input:focus,
+        .prayer_form_textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        .prayer_form_button_group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .prayer_form_submit_btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            flex: 1;
+            transition: background 0.3s;
+        }
+
+        .prayer_form_view_btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            flex: 1;
+            transition: background 0.3s;
+        }
+
+        .prayer_form_submit_btn:hover {
+            background: #357abd;
+        }
+
+        .prayer_form_view_btn:hover {
+            background: #5a6268;
+        }
+
+        /* Modal Styles */
+        .prayer_modal_overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .prayer_modal_container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+
+        .prayer_modal_header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .prayer_modal_title {
+            font-size: 20px;
+            color: #333;
+            margin: 0;
+        }
+
+        .prayer_modal_close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .prayer_request_item {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+        }
+
+        .prayer_request_item_header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .prayer_request_item_title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .prayer_request_item_description {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+
+        @media (max-width: 768px) {
+            .prayer_form_container {
+                margin: 0px 10px;
+
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .prayer_form_container {
+                padding: 15px;
+                margin: 0px 10px;
+            }
+
+            .prayer_form_button_group {
+                flex-direction: column;
+            }
+
+            .prayer_modal_container {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+
+        .prayer_request_item_status {
+            display: block;
+            padding: 4px 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .prayer_request_item_status.pending {
+            background-color: #ffb347; /* Orange for visual urgency */
+            color: white;
+        }
+
+        .prayer_request_item_status.completed {
+            background-color: #4CAF50; /* Green for completion */
+            color: white;
+        }
+    </style>
+
+                            <!-- Daily Prayers -->
+    <style>
+
+        .daily-prayer {
+            padding: 2rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+      
+        .prayer-card {
+            width: 800px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .prayer-header {
+            background: #e8f5e9;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            background: #4caf50;
+            font-size: 0.8rem;
+            border-radius: 15px;
+        }
+
+        .prayer-body {
+            padding: 15px;
+        }
+
+        .time {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+
+        .days {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .day {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: #dce0dd;
+        }
+
+        .inactive {
+            background: #e0e0ee;
+            
+            font-weight: bold;
+        }
+
+        .active {
+            background: #4caf50;
+            color: white;
+        }
+
+        .join-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #4caf50;
+            color: white;
+            text-align: center;
+        }
+
+        .join-btn a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .join-btn:hover {
+            background: #388e3c;
+        }
+
+        .notification {
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .off {
+            background: #e57373;
+            color: white;
+        }
+
+        .on {
+            background: #4caf50;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: #f0f0f0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+      /* Toast Notification */
+          .toast {
+            position: fixed;
+            bottom: var(--spacing-md);
+            right: var(--spacing-md);
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 8px;
+            display: none;
+            font-size: 0.875rem; /* 14px */
+          }
+
+          @media (max-width: 768px) {
+            .daily-prayer {
+                margin: 0px 10px;
+            }
+          }
+    </style>
+                            <!-- Donation -->
+    <style>
+
+        .donation {
+            background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%);
+        }
+
+        .donation-container {
+            text-align: center;
+            padding: 2rem 1rem;
+            /*border: 2px solid #bbdefb;*/
+            /*border-radius: 12px;*/
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .donation-container h2 {
+            font-size: 26px;
+            font-weight: bold;
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+
+        .donation-container p {
+            font-size: 18px;
+            color: #424242;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .donation-button {
+            padding: 14px 36px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #1e88e5, #1565c0);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+            display: inline-block;
+            animation: pulse 1.5s infinite ease-in-out;
+            margin-bottom: 1rem;
+        }
+
+        .donation-button:hover {
+            background: linear-gradient(90deg, #1565c0, #1e88e5);
+            transform: scale(1.08);
+            box-shadow: 0 6px 16px rgba(30, 136, 229, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            .donation-container {
+                margin: 0px 10px;
+            }
+            .donation-container h2 {
+                font-size: 22px;
+            }
+
+            .donation-container p {
+                font-size: 15px;
+            }
+        }
+    </style>
+
+                            <!-- Refer -->
+    <style>
+
+        .refer {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+
+        .refer-container {
+            text-align: center;
+
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 1px 8px 0px rgb(65 65 65 / 35%);
+            padding: 20px;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+
+        /* Buttons */
+        .whatsapp-btn, .form-btn, .call-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+        }
+
+        .whatsapp-btn:hover {
+            background: #1da851;
+        }
+
+        .form-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .form-btn:hover {
+            background: #0056b3;
+        }
+
+        /* formMODAL */
+        .formmodal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .formmodal.active {
+            display: flex;
+        }
+
+        .formmodal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: left;
+            position: relative;
+            animation: slideIn 0.3s ease-in-out;
+        }
+
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        /* Form Styles */
+        .formmodal-content h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .formmodal-content label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            margin: 10px 0 5px;
+            color: #444;
+        }
+
+        .formmodal-content input {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff5722;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .send-btn:hover {
+            background: #e64a19;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .refer-container {
+                margin: 0px 10px;
+            }
+            .refer-container h2 {
+                font-size: 26px;
+                font-weight: bold;
+                color: #0d47a1;
+                margin-bottom: 10px;
+            }
+
+            .refer-container p {
+                font-size: 12px;
+                color: #424242;
+                margin-bottom: 15px;
+                line-height: 1.5;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+        <div class="navbar">
+            <div class="logo-container" >
+                <button class="navbar-toggle" id="toggleButton">&#9776;</button>
+                <div class="logo" >
+                    <img src="https://jcmandir.com/media/images/church.jpg" alt="Logo">
+                </div>
+                <h1 class="site-title">Care &amp; Share</h1>
+            </div>
+        </div>
+
+         <div class="side-panel" id="sidePanel">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </div>
+    <div class="content" id="content">
+
+
+            <!-- Verse component -->
+        <main class="background-gray">
+            <section>
+                <section class="verse-section">
+                    <div > <!-- class="container" -->
+                        <h1 class="verse-title">Verse of the Day</h1>
+                        <div class="verse-container" >
+                            <p class="verse-text"> యెహోవా మాటలు పవిత్రమైనవి అవి మట్టిమూసలో ఏడు మారులు కరగి ఊదిన వెండి యంత పవిత్రములు</p>
+                            <p class="verse-reference">హెబ్రీయులకు 11:3 </p>
+
+                            <div class="verse-actions" >
+                                <button class="verse-button" data-action="copyVerseToClipboard">
+                                    <i class="fa-sharp fa-regular fa-clipboard" style="color: black;"></i>
+                                </button>
+                                <button class="verse-button" data-action="shareVerseOnWhatsApp">
+                                    <i class="fa-brands fa-whatsapp" style="color: #1a8e6b;"></i>
+                                </button>
+                                
+                                <button class="verse-button off" data-action="toggleNotificationPreference" data-notification_type_id="1">🔕 OFF</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </main>
+            
+        <!-- Video Component -->
+
+        <section class="background-grey">
+            <div class="video-header">
+                <h1>Daily Content</h1>
+                <p>Learn something daily</p>
+            </div>
+            <main class="yt-container">
+                <div class="yt-video-container">
+                    <div class="video-info">
+                        <h2 id="videoTitle">BBM 3</h2>
+                    </div>
+                    <div class="video-wrapper">
+                        <iframe id="videoPlayer" width="100%" height="315" src="https://www.youtube.com/embed/ibC-bQ3JAJo" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="contact-group">
+                        <p>For Doubts, Contact:</p>
+                        <a href="https://wa.me/your-placeholder-number" class="node-chat-link">
+                            <i class="fab fa-whatsapp node-chat-icon"></i>
+                        </a>
+                        <a href="tel:your-placeholder-number" class="node-call-link">
+                            <i class="fas fa-phone node-call-icon"></i>
+                        </a>
+                    </div>
+                    <div class="button-group">
+                        <button id="previousButton"><i class="fas fa-chevron-left"></i></button>
+                        <button id="share-video"><i class="fas fa-share"></i></button>
+                        <button id="nextButton"><i class="fas fa-chevron-right"></i></button>
+                        <button id="keep-notes-button" class="keep-notes-btn">Keep Notes</button>
+                    </div>
+
+                    <div id="notes-container">
+                        <div id="video-notes" contenteditable="true" placeholder="Add your notes here..."></div>
+                        <button class="save-button">Save Notes</button>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- Image Quiz Component -->
+        <section class="background-gray">
+            <div class="video-header" >
+                <h1>Daily Image Quiz</h1>
+                <p>Join every day exciting Quiz</p>
+            </div>
+            <div class="quiz-container" >
+                <div class="quiz-intro" >
+                    <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center;" >
+                        <button class="action-button off" data-action="toggleNotificationPreference" data-notification_type_id="2">🔕 OFF</button>
+                    </div>
+                    <div class="quiz-preview" >
+                        <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff" class="preview-image" alt="Quiz Preview">
+                        <p class="preview-question">What type of animal is this?</p>
+                        <button class="start-quiz-btn" id="openQuizButton"> <span class="btn-icon">▶</span>Start Quiz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Quiz Modal -->
+            <div class="quiz-modal" id="quizModal"  style="display: none;">
+                <div class="quiz-modal-content" >
+                    <div class="quiz-modal-header" >
+                      <h3 class="quiz-modal-title">Image Quiz</h3>
+                      <button class="close-btn" id="closeQuizButton" aria-label="Close Quiz">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    </div>
+
+                    <div class="quiz-modal-body" >
+                        <div class="quiz-progress-container" >
+                            <div class="quiz-progress-bar" >
+                                <div class="quiz-progress-fill" id="progressFill"  style="width: 33.3333%;"></div>
+                            </div>
+                            <span class="quiz-progress-text" id="questionProgress" style="">Question 1/5</span>
+                        </div>
+
+                        <div class="quiz-question-container" >
+                            <img id="questionImage" class="question-image" src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff" alt="Quiz Question Image" style="">
+                            <h4 id="questionText" class="question-text" style="">What type of animal is this?</h4>
+
+                            <div id="optionsContainer" class="options-grid"  style=""><button class="option-btn">Tiger</button><button class="option-btn">Lion</button><button class="option-btn">Leopard</button><button class="option-btn">Cheetah</button></div>
+
+                            <div id="feedback" class="feedback-container feedback-error"  style="display: none;">❌ Not quite. The correct answer is: Cheetah</div>
+
+                            <button id="nextQuestion" class="next-btn" style="display: none;">
+                              Continue
+                              <span class="btn-icon">→</span>
+                          </button>
+                        </div>
+
+                        <div id="quizCompleted" class="results-container"  style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+        <!-- Bible Books component -->
+        <section class="bible background-grey">
+            <div class="books-header" >
+                <h1>Bible Books Byheart</h1>
+                <p>Fast at opening Bible</p>
+            </div>
+            <div class="books-container" id="bibleBooks" >
+                <ul class="bible-books" id="bookContainer">
+                    <li class="bible-book" >యెహొషువ</li>
+                    <li class="bible-book" >న్యాయాధిపతులు</li>
+                    <li class="bible-book" >రూతు</li>
+                    <li class="bible-book" >1 సమూయేలు</li>
+                    <li class="bible-book" >2 సమూయేలు</li>
+                </ul>
+
+                <div class="progress-container" >
+                    <div class="progress-bar" id="readingProgress" style="width: 6.06061%;" ></div>
+                </div>
+                <div class="button-group" >
+                    <button id="prevBooks" class="nav-button">← Previous</button>
+                    <button id="testKnowledge" class="quiz-button">Test Your Knowledge</button>
+                    <button id="nextBooks" class="nav-button">Next →</button>
+                </div>
+            </div>
+
+            <!-- Books Quiz Modal -->
+            <div id="BooksquizModal" class="quiz-modal"  style="display: none;">
+                <div class="books-modal-content" >
+                    <div class="modal-header" >
+                        <h3>Bible Books Quiz</h3>
+                        <span class="close">×</span>
+                    </div>
+                    <div class="quiz-progress" >
+                        <div id="questionProgress"  style=""></div>
+                        <div class="time" id="timeRemaining"  style="">Time: 24s</div>
+                    </div>
+                    <div id="quizContent" >
+                            <div class="books-question-container" >
+                                <p class="quiz-question">What is the first book of the Bible?</p>
+                                <div class="options-container" >
+                                    <button class="quiz-option">Genesis</button><button class="quiz-option">Exodus</button><button class="quiz-option">Leviticus</button><button class="quiz-option">Numbers</button>
+                                </div>
+                            </div>
+                        </div>
+                    <div id="feedback" class="feedback-message"  style=""></div>
+                    <div id="scoreDisplay" class="score-container" ></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Prayer component -->
+        <section class="prayer background-gray">
+            <div class="prayer_form_container" >
+                <h2 class="prayer_form_title">Submit Prayer Request</h2>
+                <form id="prayerRequestForm">
+                    <div class="prayer_form_group" >
+                        <label class="prayer_form_label">Prayer For:</label>
+                        <select class="prayer_form_input" id="prayerFor" required="">
+                            <option value="Me">Me</option>
+                            <option value="Sister">Sister</option>
+                            <option value="Brother">Brother</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Father">Father</option>
+                            <option value="Family">Family</option>
+                            <option value="Relatives">Relatives</option>
+                            <option value="Other">Others</option>
+                        </select>
+                    </div>
+
+                    
+                    <div class="prayer_form_group" >
+                        <label class="prayer_form_label">Prayer Description:</label>
+                        <textarea class="prayer_form_textarea" id="prayerDescription" placeholder="Elaborate" required=""></textarea>
+                    </div>
+                    
+                    <div class="prayer_form_button_group" >
+                        <button type="submit" class="prayer_form_submit_btn">Submit Prayer Request</button>
+                        <button type="button" class="prayer_form_view_btn" onclick="openPrayerModal()">View Past Requests</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal for Past Prayer Requests -->
+
+            <div class="prayer_modal_overlay" id="prayerModal"  style="display: none;">
+                <div class="prayer_modal_container" >
+                    <div class="prayer_modal_header" >
+                        <h3 class="prayer_modal_title">Past Prayer Requests</h3>
+                        <button class="prayer_modal_close" onclick="closePrayerModal()">×</button>
+                    </div>
+                    <div id="pastPrayerRequests" >
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-23</span>
+                            </div>
+                            <div class="prayer_request_item_title" >Mother</div>
+                            <div class="prayer_request_item_description" >Baale </div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-23</span>
+                            </div>
+                            <div class="prayer_request_item_title" >Me</div>
+                            <div class="prayer_request_item_description" >Manasu baale</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >Hellasdf</div>
+                            <div class="prayer_request_item_description" >asdfasdf</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >asdfasdf</div>
+                            <div class="prayer_request_item_description" >asdfasdf</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >asdfasdf</div>
+                            <div class="prayer_request_item_description" >asdfasdfsad</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >asdfsadf</div>
+                            <div class="prayer_request_item_description" >asdfasdf</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >asdfsadfa</div>
+                            <div class="prayer_request_item_description" >asdfsadf</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >Hi</div>
+                            <div class="prayer_request_item_description" >Prayer for Work</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >asdfsadf</div>
+                            <div class="prayer_request_item_description" >asdfasdf</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    
+                        <div class="prayer_request_item" >
+                            <div class="prayer_request_item_header" >
+                                <span> </span>
+                                <span>Date: 2025-01-22</span>
+                            </div>
+                            <div class="prayer_request_item_title" >asdfasdf</div>
+                            <div class="prayer_request_item_description" >Hhasdfs</div>
+                            <span class="prayer_request_item_status pending">Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Testimonials Section -->
+        <section class="testimonials background-grey">
+            <h2 class="section-title">What People Say</h2>
+            <div class="testimonials-container">
+                <button class="carousel-btn left" id="prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                <div class="testimonials-track">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "Amazing experience! The team went above and beyond to make our event special. Highly recommended!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image"></div>
+                            <div>
+                                <h4>Sarah Johnson</h4>
+                                <p>Corporate Event</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "Incredible service and attention to detail. I couldn’t have asked for more!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image"></div>
+                            <div>
+                                <h4>Mark Lee</h4>
+                                <p>Wedding Planner</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            "A truly professional and reliable team. Everything was perfect from start to finish!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-image"></div>
+                            <div>
+                                <h4>Emily Davis</h4>
+                                <p>Birthday Party</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn right" id="next">
+                            <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Events Carousel -->
+        <section class="events-carousel background-gray">
+            <div class="carousel-container" >
+                <h2 class="section-title" style="color: #1e293b;">Recent Events</h2>
+                <div class="carousel-track"  style="transform: translateX(-200%);">
+                    <div class="carousel-slide" style="left: 0%;" >
+                        <div class="event-card" >
+                            <div class="event-image" >
+                                <img src="https://images.pexels.com/photos/21581509/pexels-photo-21581509/free-photo-of-looking-down-on-pink-petals.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Event 1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="left: 100%;" >
+                        <div class="event-card" >
+                            <div class="event-image" >
+                                <img src="https://images.pexels.com/photos/30243449/pexels-photo-30243449/free-photo-of-majestic-snow-covered-mountain-peaks-in-winter.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Event 2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide" style="left: 200%;" >
+                        <div class="event-card" >
+                            <div class="event-image" >
+                                <img src="https://images.pexels.com/photos/17740745/pexels-photo-17740745/free-photo-of-mountains-and-a-valley-under-clouds.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Event 3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-buttons" >
+                    <button class="carousel-button prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-button next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+            <!-- Daily Prayers -->
+        <section class="daily-prayer">
+
+            <div class="prayer-card">
+                <div class="prayer-header">
+                    <h2>📖 Daily Prayers</h2>
+                    <span class="status-badge">
+                        <button class="notification action-button off" data-action="toggleNotificationPreference" id="notification" data-notification_type_id="5">🔕 OFF</button>
+                    </span>
+                </div>
+
+                <div class="prayer-body">
+                    <div class="time">
+                        <p>🕒 : <span id="eventTime">7:00 PM</span></p>
+                    </div>
+
+                    <div class="days" id="daysContainer"></div>
+
+                    <button class="join-btn">
+                        <a id="eventLink" href="#" target="_blank">Join Online Prayer</a>
+                    </button>
+                </div>
+
+                <div class="footer">
+                Next prayer in: <span id="countdown">2 hrs 58 mins</span>
+                </div>
+            </div>
+
+            <!-- <div class="events-container">
+                <h2>📖 Daily Prayers</h2>
+                <button class="notification action-button off" data-action="toggleNotificationPreference" id="notification" data-notification_type_id="5">🔕 OFF</button>
+                <div class="days" id="daysContainer"></div>
+                <div class="event-details" id="eventDetails">
+                    <p>🕒 : <span id="eventTime">7:00 PM</span></p>
+                    <a id="eventLink" href="#" target="_blank" rel="noopener noreferrer">Join Meeting</a>
+                </div>
+            </div> -->
+
+            <div class="toast" id="toast">📢 Meeting is LIVE now! Click "Join Meeting".</div>
+        </section>
+
+
+            <!-- Donation Component -->
+        <section class="donation background-gray">
+            <div class="donation-container" >
+                <h2>Support God's Work 🙏</h2>
+                <p>Your generous donation helps us continue God's work and support our community.</p>
+                <button class="donation-button" id="donationButton">
+                    Donate Now ❤️
+                </button>
+                <p class="donation-text">Every gift, no matter the size, makes a difference. Thank you! 💙</p>
+            </div>
+        </section>
+
+            
+            <!-- Referal component -->
+        <section class="refer">
+                <div class="refer-container" >
+                    <h2>Refer a Friend</h2>
+                    <p>📖✨ Extend this blessing today and help a friend find peace, purpose, and joy in God's Word! 🙏❤️</p>
+
+                    <div class="button-group" >
+                         <button class="form-btn">Send Invite</button>
+                        <button class="whatsapp-btn">Share on WhatsApp</button>
+                    </div>
+                </div>
+
+                <!-- formModal -->
+                <div class="formmodal" >
+                    <div class="formmodal-content" >
+                        <span class="close-btn">×</span>
+                        <h3>Invite Your Friend</h3>
+
+                        <label for="name">Friend's Name:</label>
+                        <input type="text" id="name" placeholder="Enter name" required="">
+
+                        <label for="contact">Contact:</label>
+                        <input type="tel" id="contact" placeholder="Enter phone number" pattern="[0-9]{10,}" title="Enter a valid 10-digit phone number" required="">
+
+                        <label for="college">College Name:</label>
+                        <input type="text" id="college" placeholder="Enter college name" required="">
+                        <button class="send-btn">Send Invitation</button>
+                        <p class="success-message">Invitation sent successfully! ✅</p>
+                    </div>
+                </div>
+
+        </section>
+
+
+        <!-- About Us Section -->
+        <section class="about-us background-gray">
+            <div class="about-container" >
+                <div class="about-image" >
+                    <img src="/api/placeholder/600/400" alt="About Us">
+                </div>
+                <div class="about-content" >
+                    <h2>About Us</h2>
+                    <p>We are passionate about creating unforgettable experiences and bringing your vision to life. With years of expertise in event planning and management, our dedicated team ensures every detail is perfect.</p>
+                    <p>From intimate gatherings to grand celebrations, we handle every event with the same level of dedication and creativity.</p>
+                    <div class="about-stats" >
+                        <div class="stat-item" >
+                            <div class="stat-number" >500+</div>
+                            <div class="stat-label" >Events Completed</div>
+                        </div>
+                        <div class="stat-item" >
+                            <div class="stat-number" >50+</div>
+                            <div class="stat-label" >Team Members</div>
+                        </div>
+                        <div class="stat-item" >
+                            <div class="stat-number" >15+</div>
+                            <div class="stat-label" >Years Experience</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+            
+    </div>
+
+        <!-- Navbar Toggle -->
+    <script>
+        $(document).ready(function() {
+            $('#toggleButton').click(function() {
+                $('#sidePanel').toggleClass('open');
+                $('#content').toggleClass('shift');
+            });
+        });
+    </script>
+
+        <!-- Testimonials carousel -->
+    <script>
+        $(document).ready(function () {
+            const $track = $('.testimonials-track');
+            const $slides = $('.testimonial-card');
+            const totalSlides = $slides.length;
+            let currentIndex = 0;
+
+            // Function to move the slide
+            function moveSlide(direction) {
+                currentIndex += direction;
+
+                // Handle looping
+                if (currentIndex < 0) {
+                    currentIndex = totalSlides - 1; // Go to the last slide
+                } else if (currentIndex >= totalSlides) {
+                    currentIndex = 0; // Go to the first slide
+                }
+
+                const offset = -currentIndex * 100; // Each slide is 100% width
+                $track.css('transform', `translateX(${offset}%)`);
+            }
+
+            // Auto slide every 3 seconds
+            setInterval(() => {
+                moveSlide(1);
+            }, 3000);
+
+            // Event listeners for buttons
+            $('#prev').click(function () {
+                moveSlide(-1);
+            });
+
+            $('#next').click(function () {
+                moveSlide(1);
+            });
+        });
+    </script>
+
+    
+
+    <script>
+        // Simple carousel functionality
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.querySelector('.next');
+        const prevButton = document.querySelector('.prev');
+        let currentIndex = 0;
+
+        // Set initial position
+        slides.forEach((slide, index) => {
+            slide.style.left = index * 100 + '%';
+        });
+
+        // Move to slide
+        const moveToSlide = (index) => {
+            track.style.transform = 'translateX(-' + (index * 100) + '%)';
+            currentIndex = index;
+        };
+
+        // Next button click
+        nextButton.addEventListener('click', () => {
+            currentIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+            moveToSlide(currentIndex);
+        });
+
+        // Previous button click
+        prevButton.addEventListener('click', () => {
+            currentIndex = currentIndex === 0 ? slides.length - 1 : currentIndex - 1;
+            moveToSlide(currentIndex);
+        });
+
+        // Auto-advance carousel
+        setInterval(() => {
+            currentIndex = currentIndex === slides.length - 1 ? 0 : currentIndex + 1;
+            moveToSlide(currentIndex);
+        }, 5000);
+    </script>
+
+    <script>
+        const pastRequests =  [{"id":"8D076785","prayer_for":"Mother","status":0,"prayer_description":"Baale ","date":"2025-01-23"},{"id":"A15D25E1","prayer_for":"Me","status":0,"prayer_description":"Manasu baale","date":"2025-01-23"},{"id":"83DCEFB7","prayer_for":"Hellasdf","status":0,"prayer_description":"asdfasdf","date":"2025-01-22"},{"id":"1AD5BE0D","prayer_for":"asdfasdf","status":0,"prayer_description":"asdfasdf","date":"2025-01-22"},{"id":"6DD28E9B","prayer_for":"asdfasdf","status":0,"prayer_description":"asdfasdfsad","date":"2025-01-22"},{"id":"F3B61B38","prayer_for":"asdfsadf","status":0,"prayer_description":"asdfasdf","date":"2025-01-22"},{"id":"84B12BAE","prayer_for":"asdfsadfa","status":0,"prayer_description":"asdfsadf","date":"2025-01-22"},{"id":"1DB87A14","prayer_for":"Hi","status":0,"prayer_description":"Prayer for Work","date":"2025-01-22"},{"id":"6ABF4A82","prayer_for":"asdfsadf","status":0,"prayer_description":"asdfasdf","date":"2025-01-22"},{"id":"FA005713","prayer_for":"asdfasdf","status":0,"prayer_description":"Hhasdfs","date":"2025-01-22"}];
+
+        $('#prayerRequestForm').submit(function(e) {
+            e.preventDefault();
+            var form = this;
+
+            var prayerFor = $('#prayerFor').val();
+            var description = $('#prayerDescription').val();
+
+            $.post('server.php', {
+                action: 'addPrayerReq', 
+                prayer_for: prayerFor, 
+                prayer_description: description
+            }, function(response) {
+                console.log(response);
+                // Check if response is string and parse it as JSON
+                response = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                if (response.success) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Prayer request submitted successfully!',
+                        icon: 'success'
+                    });
+
+                    // Assuming there's a method to add to a UI list or storage
+                    pastRequests.unshift({
+                        id: response.id,  
+                        date: new Date().toLocaleDateString(), 
+                        prayer_for: prayerFor, 
+                        prayer_description: description,
+                        status:0,
+                    });
+                    console.log('Prayer Request Submitted:', { prayerFor, description });
+
+                    // Clear input fields using jQuery
+                    $('#prayerFor, #prayerDescription').val('');
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.message,
+                        icon: 'error'
+                    });
+                }
+            }).fail(function(xhr, status, error) {
+                Swal.fire({
+                    title: 'Network Error!',
+                    text: 'Unable to send prayer request. Please try again later.',
+                    icon: 'error'
+                });
+            });
+        });
+
+
+
+        // Modal functions
+        function openPrayerModal() {
+            document.getElementById('prayerModal').style.display = 'block';
+            displayPastRequests();
+        }
+
+        function closePrayerModal() {
+            document.getElementById('prayerModal').style.display = 'none';
+        }
+
+        function displayPastRequests() {
+            const container = document.getElementById('pastPrayerRequests');
+            container.innerHTML = pastRequests.map(request => {
+                const statusText = request.status === 0 ? 'Pending' : 'Completed';
+                const statusClass = request.status === 0 ? 'pending' : 'completed'; 
+
+                return `
+                    <div class="prayer_request_item">
+                        <div class="prayer_request_item_header">
+                            <span> </span>
+                            <span>Date: ${request.date}</span>
+                        </div>
+                        <div class="prayer_request_item_title">${request.prayer_for}</div>
+                        <div class="prayer_request_item_description">${request.prayer_description}</div>
+                        <span class="prayer_request_item_status ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('prayerModal');
+            if (event.target === modal) {
+                closePrayerModal();
+            }
+        }
+    </script>           
+
+    <script>
+      $(document).ready(function() {
+          const questions = [{"id":1,"image":"https:\/\/images.unsplash.com\/photo-1526772662000-3f88f10405ff","question":"What type of animal is this?","options":["Tiger","Lion","Leopard","Cheetah"],"correctAnswer":"Cheetah"},{"id":2,"image":"https:\/\/images.unsplash.com\/photo-1564349683136-77e08dba1ef7","question":"Which species of penguin is this?","options":["Emperor","King","Adelie","Gentoo"],"correctAnswer":"Emperor"},{"id":3,"image":"https:\/\/images.unsplash.com\/photo-1564349683136-77e08dba1ef7","question":"Which species of penguin is this?","options":["Emperor","King","Adelie","Gentoo"],"correctAnswer":"Emperor"}];
+          let currentQuestionIndex = 0;
+          let score = 0;
+
+          // Event Listeners
+          $("#openQuizButton").click(startQuiz);
+          $("#closeQuizButton").click(() => $("#quizModal").fadeOut(300));
+          $("#nextQuestion").click(nextQuestion);
+
+          // Close modal when clicking outside
+          $(window).click(function(event) {
+              if ($(event.target).is("#quizModal")) {
+                  $("#quizModal").fadeOut(300);
+              }
+          });
+
+          function updateProgressBar() {
+              const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+              $("#progressFill").css("width", `${progress}%`);
+              $("#questionProgress").text(`Question ${currentQuestionIndex + 1} of ${questions.length}`);
+          }
+
+          function startQuiz() {
+              currentQuestionIndex = 0;
+              score = 0;
+              $("#quizModal").fadeIn(300);
+              $("#quizCompleted").hide();
+              loadQuestion();
+          }
+
+          function loadQuestion() {
+              const currentQuestion = questions[currentQuestionIndex];
+
+              if (!currentQuestion) {
+                  showError("Question data not found");
+                  return;
+              }
+
+              updateProgressBar();
+
+              $("#questionImage").attr("src", currentQuestion.image)
+                  .hide()
+                  .fadeIn(500);
+
+              $("#questionText").text(currentQuestion.question);
+              $("#optionsContainer").empty();
+              $("#feedback").hide();
+              $("#nextQuestion").hide();
+
+              if (Array.isArray(currentQuestion.options)) {
+                  currentQuestion.options.forEach(option => {
+                      $("<button>")
+                          .text(option)
+                          .addClass("option-btn")
+                          .click(() => selectOption(option))
+                          .appendTo("#optionsContainer");
+                  });
+              }
+          }
+
+          function selectOption(selectedOption) {
+              const currentQuestion = questions[currentQuestionIndex];
+              $(".option-btn").prop("disabled", true);
+
+              $(".option-btn").each(function() {
+                  if ($(this).text() === currentQuestion.correctAnswer) {
+                      $(this).addClass("correct");
+                  } else if ($(this).text() === selectedOption) {
+                      $(this).addClass(selectedOption === currentQuestion.correctAnswer ? "correct" : "incorrect");
+                  }
+              });
+
+              if (selectedOption === currentQuestion.correctAnswer) {
+                  $("#feedback")
+                      .removeClass("feedback-error")
+                      .addClass("feedback-success")
+                      .html("🎉 Excellent! That's correct!")
+                      .fadeIn(300);
+                  score++;
+              } else {
+                  $("#feedback")
+                      .removeClass("feedback-success")
+                      .addClass("feedback-error")
+                      .html(`❌ Not quite. The correct answer is: ${currentQuestion.correctAnswer}`)
+                      .fadeIn(300);
+              }
+
+              $("#nextQuestion").fadeIn(300);
+          }
+
+          function nextQuestion() {
+              currentQuestionIndex++;
+              if (currentQuestionIndex < questions.length) {
+                  $("#questionImage, #questionText, #optionsContainer, #feedback, #nextQuestion")
+                      .fadeOut(300, function() {
+                          loadQuestion();
+                          $(this).fadeIn(300);
+                      });
+              } else {
+                  showResult();
+              }
+          }
+
+          function showResult() {
+              const percentage = Math.round((score / questions.length) * 100);
+              let emoji = percentage >= 80 ? "🏆" : percentage >= 60 ? "🌟" : "💪";
+              let message = `
+                  <h3>${emoji} Quiz Complete!</h3>
+                  <p>You scored ${score} out of ${questions.length} (${percentage}%)</p>
+              `;
+
+              $("#questionImage, #questionText, #optionsContainer, #feedback, #nextQuestion, .progress-container")
+                  .fadeOut(300, function() {
+                      $("#quizCompleted")
+                          .html(message)
+                          .fadeIn(300);
+                  });
+          }
+
+          function showError(message) {
+              $("#quizCompleted")
+                  .html(`<p class="feedback-error">${message}</p>`)
+                  .fadeIn(300);
+          }
+
+
+      });
+    </script>         
+
+    <script>
+        $(document).ready(function() {
+            // Bible books data
+            const allBooks = [
+                 "ఆదికాండము", "నిర్గమకాండము", "లేవీయకాండము", "సంఖ్యాకాండము", 
+                "ద్వితీయోపదేశకాండమ", "యెహొషువ", "న్యాయాధిపతులు", "రూతు",
+                "1 సమూయేలు", "2 సమూయేలు",
+                "1 రాజులు", "2 రాజులు",
+                "1 దినవృత్తాంతములు", "2 దినవృత్తాంతములు",
+                "ఎజ్రా", "నెహెమ్యా", "ఎస్తేరు", "యోబు", "కీర్తనల గ్రంథము",
+                "సామెతలు", "ప్రసంగి", "పరమగీతము", "యెషయా", "యిర్మీయా",
+                "విలాపవాక్యములు", "యెహెజ్కేలు", "దానియేలు", "హొషేయ", "యోవేలు",
+                "ఆమోసు", "ఓబద్యా", "యోనా", "మీకా", "నహూము", "హబక్కూకు",
+                "జెఫన్యా", "హగ్గయి", "జెకర్యా", "మలాకీ",  "మత్తయి సువార్త", "మార్కు సువార్త", "లూకా సువార్త", "యోహాను సువార్త",
+                "అపొస్తలుల కార్యములు", "రోమీయులకు", "1 కొరింథీయులకు", "2 కొరింథీయులకు",
+                "గలతీయులకు", "ఎఫెసీయులకు", "ఫిలిప్పీయులకు", "కొలొస్సయులకు",
+                "1 థెస్సలొనీకయులకు", "2 థెస్సలొనీకయులకు", "1 తిమోతికి", "2 తిమోతికి",
+                "తీతుకు", "ఫిలేమోనుకు", "హెబ్రీయులకు", "యాకోబు", "1 పేతురు",
+                "2 పేతురు", "1 యోహాను", "2 యోహాను", "3 యోహాను", "యూదా",
+                "ప్రకటన గ్రంథము"
+                         
+            ];
+
+            // Quiz state
+            let currentIndex = 0;
+            let currentQuestion = 0;
+            let score = 0;
+            let timer;
+            let questionTimer;
+            const timePerQuestion = 30; // seconds
+            
+            // Fetch questions from PHP
+            const questions = [{"id":1,"image":"https:\/\/example.com\/images\/question1.jpg","question":"What is the first book of the Bible?","options":["Genesis","Exodus","Leviticus","Numbers"],"correctAnswer":"Genesis"},{"id":2,"image":"https:\/\/example.com\/images\/question2.jpg","question":"Who led the Israelites out of Egypt?","options":["Moses","Abraham","David","Joshua"],"correctAnswer":"Moses"},{"id":3,"image":"https:\/\/example.com\/images\/question3.jpg","question":"How many books are there in the New Testament?","options":["27","39","66","12"],"correctAnswer":"27"},{"id":4,"image":"https:\/\/example.com\/images\/question4.jpg","question":"Which Gospel is the shortest?","options":["Matthew","Mark","Luke","John"],"correctAnswer":"Mark"},{"id":5,"image":"https:\/\/example.com\/images\/question5.jpg","question":"Who is considered the father of faith in the Bible?","options":["Abraham","Isaac","Jacob","Joseph"],"correctAnswer":"Abraham"}];
+            console.log(typeof(questions));
+            const books_read = 4;
+            
+            // Initialize
+            displayBooks();
+            
+            $('#testKnowledge').click(function() {
+                resetQuiz();
+                $('#BooksquizModal').fadeIn();
+            });
+
+            $('.close, #BooksquizModal').click(function(event) {
+                if (event.target === this) {
+                    $('#BooksquizModal').fadeOut();
+                    clearInterval(timer);
+                }
+            });
+
+            $(document).on('click', '#retakeQuiz', resetQuiz);
+
+            $('#nextBooks').click(function() {
+                currentIndex = (currentIndex + 5) % allBooks.length;
+                displayBooks();
+            });
+
+            $('#prevBooks').click(function() {
+                currentIndex = (currentIndex - 5 + allBooks.length) % allBooks.length;
+                displayBooks();
+            });
+
+
+            
+            $(document).on('click', '.quiz-option', handleQuizOptionClick);
+
+
+            
+            function nextQuestion() {
+                currentQuestion++;
+                $('#feedback').hide();
+                showQuestion();
+            }
+            
+            
+            function updateProgressBar() {
+                const progress = (books_read / allBooks.length) * 100;
+                $('#readingProgress').css('width', `${progress}%`);
+            }
+
+            function displayBooks() {
+                $('#bookContainer').empty();
+                for (let i = currentIndex; i < currentIndex + 5; i++) {
+                    if (i < allBooks.length) {
+                        const bookElement = $('<div>')
+                            .addClass('bible-book')
+                            .text(allBooks[i]);
+                        
+                        if (i < books_read) {
+                            bookElement.addClass('read');
+                        }
+                        $('#bookContainer').append(bookElement);
+                    }
+                }
+                updateProgressBar();
+            }
+
+            function startTimer() {
+                let timeLeft = timePerQuestion;
+                $('#timeRemaining').text(`Time: ${timeLeft}s`);
+
+                clearInterval(timer);
+                timer = setInterval(() => {
+                    timeLeft--;
+                    $('#timeRemaining').text(`Time: ${timeLeft}s`);
+
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        handleTimeout();
+                    }
+                }, 1000);
+            }
+
+            function handleTimeout() {
+                const correctAnswer = questions[currentQuestion].answer;
+                showFeedback(false, correctAnswer);
+                disableOptions();
+                setTimeout(nextQuestion, 2000);
+            }
+
+            function showQuestion() {
+                if (currentQuestion < questions.length) {
+                    const q = questions[currentQuestion];
+                    let quizHTML = `
+                        <div class="question-container">
+                            <p class="quiz-question">${q.question}</p>
+                            <div class="options-container">
+                                ${q.options.map(option => 
+                                    `<button class="quiz-option">${option}</button>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                    
+                    $('#quizContent').html(quizHTML);
+                    $('#questionProgress').text(`Question ${currentQuestion + 1}/${questions.length}`);
+                    startTimer();
+                } else {
+                    showFinalScore();
+                }
+            }
+
+            function showFeedback(isCorrect, correctAnswer) {
+                const feedback = isCorrect ? 
+                    '<div class="correct-feedback">Correct! ✓</div>' :
+                    `<div class="wrong-feedback">Incorrect. The correct answer was: ${correctAnswer}</div>`;
+                $('#feedback').html(feedback).show();
+            }
+
+            function showFinalScore() {
+                const percentage = Math.round((score / questions.length) * 100);
+                let message = `
+                    <div class="final-score">
+                        <h3>Quiz Complete!</h3>
+                        <p>Your score: ${score}/${questions.length} (${percentage}%)</p>
+                        ${getFeedbackMessage(percentage)}
+                        <button id="retakeQuiz" class="quiz-button">Retake Quiz</button>
+                    </div>
+                `;
+                $('#quizContent').html(message);
+                $('#questionProgress, #timeRemaining').hide();
+            }
+
+            function getFeedbackMessage(percentage) {
+                if (percentage === 100) return '<p>Perfect score! Amazing job! 🏆</p>';
+                if (percentage >= 80) return '<p>Great work! Keep it up! 🌟</p>';
+                if (percentage >= 60) return '<p>Good effort! Room for improvement! 📚</p>';
+                return '<p>Keep studying! You\'ll do better next time! 💪</p>';
+            }
+
+            function disableOptions() {
+                $('.quiz-option').prop('disabled', true);
+            }
+
+            function resetQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                $('#feedback').hide();
+                $('#questionProgress, #timeRemaining').show();
+                showQuestion();
+            }
+
+            // Event Handlers
+           function handleQuizOptionClick() {
+                clearInterval(timer);
+                const selectedAnswer = $(this).text();
+                const correctAnswer = questions[currentQuestion].answer;
+                const isCorrect = selectedAnswer === correctAnswer;
+            
+                if (isCorrect) {
+                    score++;
+                }
+            
+                $(this).addClass(isCorrect ? 'correct' : 'wrong');
+                if (!isCorrect) {
+                    // Mark all correct options if the selected answer is wrong
+                    $('.quiz-option').each(function() {
+                        if ($(this).text() === correctAnswer) {
+                            $(this).addClass('correct');
+                        }
+                    });
+                }
+            
+                showFeedback(isCorrect, correctAnswer);  // Show feedback for the answer
+                disableOptions();                       // Disable further selections
+                setTimeout(nextQuestion, 2000);         // Move to the next question after a delay
+            }
+
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var quill = new Quill('#video-notes', {
+                theme: 'snow'
+            });
+            var videoData = [{"id":1,"name":"Life","YTVideoId":"v0iEvB4c6c8","notes":"<h1>adasdf 123<\/h1>"},{"id":2,"name":"LBBM 1","YTVideoId":"qDxz_OCh4o0","notes":"<h1>Vivek<\/h1>"},{"id":3,"name":"LBBM 2","YTVideoId":"YQw7RGuotUQ","notes":"<p>Mamuley poni<\/p>"},{"id":4,"name":"LBBM 3","YTVideoId":"V-ZNdxG8nZU","notes":null},{"id":5,"name":"BBM 1","YTVideoId":"LjXRqIS2fOM","notes":null},{"id":6,"name":"BBM 2","YTVideoId":"uRQLCntIRNQ","notes":"<p>Vbbbb<\/p>"},{"id":7,"name":"BBM 3","YTVideoId":"ibC-bQ3JAJo","notes":"<p>Hbhh<\/p>"},{"id":8,"name":"BBM 4","YTVideoId":"4gKPDWtnX7o","notes":null},{"id":9,"name":"BBM 5","YTVideoId":"sQXfXlZu9X4","notes":null},{"id":10,"name":"BBM 6","YTVideoId":"OxZ2nykEZ3c","notes":null},{"id":11,"name":"BBM 7","YTVideoId":"J1D729KTfbQ","notes":null},{"id":12,"name":"BBM 8","YTVideoId":"gSO5jKffYRA","notes":null},{"id":13,"name":"BBM 9","YTVideoId":"7j8M-D_7i4o","notes":null},{"id":14,"name":"BBM 10","YTVideoId":"pMtxHMMI9fE","notes":null},{"id":15,"name":"GC 1","YTVideoId":"Di0hLrJIaoA","notes":null},{"id":16,"name":"GC 2","YTVideoId":"YWzy8h9pyps","notes":null},{"id":17,"name":"GC 3","YTVideoId":"tAbvgk2M5h0","notes":null},{"id":18,"name":"GC 4","YTVideoId":"kF0QoqRrmS4","notes":null},{"id":19,"name":"SM 1","YTVideoId":"6EEyIxVpAlY","notes":null},{"id":20,"name":"GC 5","YTVideoId":"i0f74bXFalA","notes":null},{"id":21,"name":"GC 6","YTVideoId":"PXCDsHPG9uE","notes":null},{"id":22,"name":"SM 2","YTVideoId":"eWKcHuqa9_4","notes":null},{"id":23,"name":"GC 7","YTVideoId":"2ap83Jlz8tM","notes":null},{"id":24,"name":"GC 8","YTVideoId":"HfFZsHiLtFo","notes":null},{"id":25,"name":"SM 3","YTVideoId":"S6ldNdZmlGE","notes":null}];
+            var currentVideoId = 7;
+            var userContentVideoId = currentVideoId;
+
+            // Check if videoData is valid
+            if (!Array.isArray(videoData) || videoData.length === 0) {
+                console.error("Invalid or empty video data.");
+                return;
+            }
+
+            const videoTitle = $("#videoTitle");
+            const videoPlayer = $("#videoPlayer");
+            const nextButton = $("#nextButton");
+            const previousButton = $("#previousButton");
+
+             // Toggle notes toolbar
+            $('#keep-notes-button').on('click', function () {
+                $('#notes-container').toggleClass('active');
+            });
+
+            
+              $('.save-button').click(function() {
+                    var video = findVideoById(currentVideoId); 
+            
+                    if (video) {
+                        var currentNotes = quill.root.innerHTML; 
+            
+                        if (video.notes === currentNotes) {
+                            Swal.fire({ 
+                                icon: 'success',
+                                title: 'Upto Date',
+                                text: 'Notes is upto date'
+                            });
+                             $('#notes-container').removeClass('active');
+                        } else {
+            
+                            $.post('server.php', {
+                                action: 'updateUserContent',
+                                notes: currentNotes,
+                                contentId: currentVideoId
+                            }, function(response) {
+                                if (response.success) {
+                                    Swal.fire({ 
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'Your content has been successfully updated.'
+                                    });
+                                    video.notes = currentNotes;
+                                } else {
+                                    Swal.fire({ 
+                                        icon: 'error',
+                                        title: 'Failed',
+                                        text: 'Failed to update content.'
+                                    });
+                                }
+                            }, 'json'); 
+                        }
+                    } else {
+                        Swal.fire({ 
+                            icon: 'error',
+                            title: 'Not Found',
+                            text: 'The requested video was not found.'
+                        });
+                    }
+                });
+            // Function to find video by ID
+            function findVideoById(videoId) {
+                return videoData.find(video => video.id == videoId);
+            }
+
+            // Function to load a video by ID
+            function loadVideo(videoId) {
+                const video = findVideoById(videoId);
+                if (video) {
+                    videoTitle.text(video.name || "Untitled Video");
+                    videoPlayer.attr("src", `https://www.youtube.com/embed/${video.YTVideoId}`);
+                    currentVideoId = video.id;
+                    quill.root.innerHTML = video.notes;
+                } else {
+                    console.error("Video not found for ID:", videoId);
+                }
+            }
+
+            // Function to get the next video ID
+            function getNextVideoId(currentId) {
+                const currentIndex = videoData.findIndex(video => video.id === currentId);
+                if (currentIndex !== -1 && currentIndex < videoData.length - 1) {
+                    return videoData[currentIndex + 1].id;
+                }
+                return null;
+            }
+
+            // Function to get the previous video ID
+            function getPreviousVideoId(currentId) {
+                const currentIndex = videoData.findIndex(video => video.id === currentId);
+                if (currentIndex > 0) {
+                    return videoData[currentIndex - 1].id;
+                }
+                return null;
+            }
+
+            // Next button functionality
+            nextButton.click(function () {
+                const nextVideoId = getNextVideoId(currentVideoId);
+
+                if (currentVideoId < userContentVideoId) {
+                    loadVideo(nextVideoId);
+                    return;
+                }
+
+                if (!nextVideoId) {
+                    Swal.fire('Nice ra thammudu!', 'This was the last video! You may watch from start', 'success');
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Are you done watching?',
+                    text: 'Have you clarified your doubts with Node?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, move to next video',
+                    cancelButtonText: 'No, wait',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // User confirmed, send data to the server
+                        $.post('server.php', {
+                            action: 'updateUserContentId',
+                            currentVideoId: nextVideoId,
+                        }, function (response) {
+                            console.log(response);
+                            if (response.success) {
+                                userContentVideoId = nextVideoId;
+                                loadVideo(nextVideoId);
+                            } else {
+                                Swal.fire('Error', 'Could not update progress. Please try again.', 'error');
+                            }
+                        }, 'json').fail(function () {
+                            // Handle AJAX failure
+                            Swal.fire('Error', 'Unable to communicate with the server. Please check your connection.', 'error');
+                        });
+                    } else {
+                        // User canceled
+                        Swal.fire('Take your time!', 'You can proceed when ready.', 'info');
+                    }
+                });
+            });
+
+            // Previous button functionality
+            previousButton.click(function () {
+                const prevVideoId = getPreviousVideoId(currentVideoId);
+                if (prevVideoId) {
+                    loadVideo(prevVideoId);
+                } else {
+                    alert("This is the first video!");
+                }
+            });
+
+            // Initialize with the current video
+            loadVideo(currentVideoId);
+        });
+    </script>
+               
+    <script>
+        $(document).ready(function () {
+             $('.action-button').click(function() {
+                var action = $(this).data('action');
+                button = $(this);
+                performAction(action,button);
+            });
+            
+            // video Notes
+
+            let notesVisible = false;
+
+            $("#toggle-notes").click(function () {
+                notesVisible = !notesVisible;
+                $("#video-notes").toggle(notesVisible);
+                $(this).text(notesVisible ? "Save Notes" : "Keep Notes");
+            });
+
+            $("#share-video").click(function () {
+                alert("Video shared!");
+            });
+
+            
+            let isFavorited = false;
+
+            $("#favorite-video").click(function() {
+                isFavorited = !isFavorited;
+                $(this).toggleClass('favorited');
+                $(this).html(isFavorited ? '<i class="fas fa-heart"></i> ' : '<i class="far fa-heart"></i>');
+            });
+
+
+
+            // Donation
+            $('#donationButton').click(function () {
+                alert('Donation process initiated!');
+            });
+
+ // Events Calendar
+    const events = {
+        "Sunday": [{ "time": "10:00 AM", "link": "https://example.com/sunday-worship" }],
+        "Monday": [{ "time": "06:00 AM", "link": "https://example.com/daily-prayer" }],
+        "Tuesday": [{ "time": "06:00 AM", "link": "https://example.com/daily-prayer" }],
+        "Wednesday": [{ "time": "06:00 AM", "link": "https://example.com/daily-prayer" }],
+        "Thursday": [{ "time": "06:00 AM", "link": "https://example.com/daily-prayer" }],
+        "Friday": [{ "time": "06:00 AM", "link": "https://example.com/daily-prayer" }],
+        "Saturday": [{ "time": "06:00 AM", "link": "https://example.com/daily-prayer" }]
+    };
+
+    let selectedDay = new Date().toLocaleString('en-US', { weekday: 'long' });
+
+    function updateEventDetails(day) {
+        if (day === "Sunday") {
+            return; // Do nothing if Sunday is selected
+        }
+        $("#eventTime").text(events[day][0].time);
+        $("#eventLink").attr("href", events[day][0].link);
+        checkMeetingTime();
+    }
+
+    function renderDays() {
+        const $daysContainer = $("#daysContainer");
+        $daysContainer.empty(); // Clear previous days to avoid duplication
+
+        $.each(events, function (day) {
+            const $dayElement = $("<div>").addClass("day").text(day.slice(0, 3));
+
+            if (day === "Sunday") {
+                $dayElement.addClass("inactive").css({ opacity: "0.5", cursor: "not-allowed" });
+            } else if (day === selectedDay) {
+                $dayElement.addClass("active");
+            }
+
+            $dayElement.on("click", function () {
+                if (day === "Sunday") return; // Prevent selection of Sunday
+
+                $(".day").removeClass("active");
+                $(this).addClass("active");
+                selectedDay = day;
+                updateEventDetails(day);
+            });
+
+            $daysContainer.append($dayElement);
+        });
+    }
+
+    function checkMeetingTime() {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinutes = now.getMinutes();
+        const eventTime = $("#eventTime").text();
+        const [eventHour, eventMinutes] = eventTime.match(/\d+/g).map(Number);
+        const isPM = eventTime.includes("PM");
+
+        const actualEventHour = isPM && eventHour !== 12 ? eventHour + 12 : eventHour;
+
+        if (currentHour === actualEventHour && currentMinutes === eventMinutes) {
+            $("#eventLink").addClass("enabled");
+            $("#toast").fadeIn().delay(5000).fadeOut();
+
+            // Hide toast after 2 minutes (120,000 ms)
+            setTimeout(() => {
+                $("#toast").fadeOut();
+            }, 120000);
+        } else {
+            $("#eventLink").removeClass("enabled");
+        }
+    }
+
+    function toggleNotification() {
+        const $notificationButton = $("#notification");
+        $notificationButton.on("click", function () {
+            $(this).toggleClass("off");
+            $(this).text($(this).hasClass("off") ? "🔕 OFF" : "🔔 ON");
+        });
+    }
+
+    renderDays();
+    updateEventDetails(selectedDay);
+    toggleNotification();
+    setInterval(checkMeetingTime, 1000);
+               
+
+
+
+
+        //   Refer
+            const $formmodal = $(".formmodal");
+            const $formmodalContent = $(".formmodal-content");
+            const $openformModalButton = $(".form-btn");
+            const $closeformModalButton = $(".close-btn");
+
+            // Open formmodal
+            $openformModalButton.click(() => $formmodal.addClass("active"));
+
+            // Close formmodal when clicking the close button
+            $closeformModalButton.click(() => $formmodal.removeClass("active"));
+
+            // Close formmodal when clicking outside the formmodal content
+            $formmodal.click(function (event) {
+                if (!$(event.target).closest(".formmodal-content").length) {
+                    $formmodal.removeClass("active");
+                }
+            });
+
+            // Handle form submission with validation
+            $(".send-btn").click(function () {
+                let name = $("#name").val().trim();
+                let contact = $("#contact").val().trim();
+                let college = $("#college").val().trim();
+                let isValid = true;
+
+                // Remove existing error messages
+                $(".error").remove();
+
+                // Validate Name
+                if (name === "") {
+                    $("#name").after("<span class='error' style='color:red; font-size: 12px;'>Name is required</span>");
+                    isValid = false;
+                }
+
+                // Validate Contact (should be numbers and at least 10 digits)
+                let phoneRegex = /^[0-9]{10,}$/;
+                if (!phoneRegex.test(contact)) {
+                    $("#contact").after("<span class='error' style='color:red; font-size: 12px;'>Enter a valid phone number</span>");
+                    isValid = false;
+                }
+
+                // Validate College Name
+                if (college === "") {
+                    $("#college").after("<span class='error' style='color:red; font-size: 12px;'>College name is required</span>");
+                    isValid = false;
+                }
+
+                // If form is valid, show success message
+                if (isValid) {
+                    $(".success-message").fadeIn().delay(3000).fadeOut();
+                    $(".formmodal-content input").val(""); // Clear form
+                }
+            });
+
+            // WhatsApp Sharing
+            $(".whatsapp-btn").click(function () {
+                let message = "Hey! Check out this amazing website: https://yourwebsite.com";
+                let whatsappURL = "https://wa.me/?text=" + encodeURIComponent(message);
+                window.open(whatsappURL, "_blank");
+            });
+        });
+        
+        function performAction(action,elem) {
+            switch(action) {
+                case 'copyVerseToClipboard':
+                    copyVerseToClipboard();
+                    break;
+                case 'shareVerseOnWhatsApp':
+                    shareVerseOnWhatsApp();
+                    break;
+                case 'toggleNotificationPreference':
+                    toggleNotificationPreference(elem);
+                    break;
+                default:
+                    alert("No action for this button");
+                    console.log('Action not recognized');
+            }
+        }
+        
+        
+        function copyVerseToClipboard() {
+            const verse = $('.verse-text').text();
+            const verseRef = $('.verse-reference').text();
+            const shareText = `${verse}\n\n${verseRef}\n\n`;
+            navigator.clipboard.writeText(shareText).then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Copied!",
+                    text: "Verse copied to clipboard.",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }).catch(err => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Failed to copy!",
+                    text: "Try manually selecting and copying.",
+                });
+            });
+        }
+        function shareVerseOnWhatsApp() {
+            const verse = $('.verse-text').text().trim();
+            const verseRef = $('.verse-reference').text().trim();
+            const url = window.location.href;
+            
+            const shareText = `*${verse}*\n\n_${verseRef}_\n\nVisit for Daily Bread:\n${url}`;
+            const whatsappURL = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+            window.open(whatsappURL, "_blank", "noopener,noreferrer");
+        }
+        
+        function toggleNotificationPreference(element) {
+            var notificationTypeId = element.data('notification_type_id');
+            if (!notificationTypeId) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Notification type not provided.",
+                    icon: "error",
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: "OK",
+                });
+                return; 
+            }
+            var isNotified = element.hasClass("off");
+            var action = isNotified ? 'enableNotificationPreference' : 'disableNotificationPreference';
+            $.post('server.php', {
+                action: action,
+                notification_type_id: notificationTypeId
+            }, function(response) {
+                console.log(response);
+                response = JSON.parse(response.trim()); 
+                if (response.success) {
+                    element.toggleClass('off'); 
+                    var newState = isNotified ? "🔔 ON" : "🔕 OFF";
+                    var newTitle = isNotified ? "🔔 Notifications Enabled!" : "🔕 Notifications Disabled!";
+                    var newText = isNotified ? "You will be reminded" : "You will not receive reminders.";
+        
+                    element.text(newState);
+                    Swal.fire({
+                        title: newTitle,
+                        text: newText,
+                        icon: isNotified ? "success" : "info",
+                        confirmButtonColor: isNotified ? "#ff4d6d" : "#444",
+                        confirmButtonText: "OK",
+                    });
+                } else {
+        
+                    Swal.fire({
+                        title: "Error",
+                        text: "Failed to update notification settings. Please try again.",
+                        icon: "error",
+                        confirmButtonColor: "#dc3545",
+                        confirmButtonText: "OK",
+                    });
+                }
+            }).fail(function() {
+        
+                Swal.fire({
+                    title: "Network Error",
+                    text: "There was a problem connecting to the server. Please check your connection and try again.",
+                    icon: "error",
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: "OK",
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>
