@@ -64,10 +64,10 @@
 
         .side-panel {
             height: 100%;
-            width: 250px;
+            width: 300px;
             position: fixed;
             top: 0;
-            left: -250px;
+            left: -300px;
 
             background: rgba(46, 113, 117, 0.95);
             overflow-x: hidden;
@@ -94,41 +94,14 @@
             left: 0;
         }
 
-        .content {
-            transition: margin-left 0.5s;
-        }
-
-        .content.shift {
-            margin-left: 250px;
-        }
-
          @media (max-width: 768px) {
             .side-panel {
-                width: 30%; /* Full width on small screens */
+                width: 45%; /* Full width on small screens */
                 left: -100%; /* Hide completely off-screen */
             }
 
             .side-panel.open {
                 left: 0; /* Bring into view */
-            }
-
-            .content.shift {
-                margin-left: 30%; /* No shift on small screens */
-            }
-        }
-
-        @media (min-width: 769px) {
-            .side-panel {
-                width: 250px; /* Fixed width on larger screens */
-                left: -250px; /* Hide off-screen */
-            }
-
-            .side-panel.open {
-                left: 0; /* Bring into view */
-            }
-
-            .content.shift {
-                margin-left: 250px; /* Shift content on larger screens */
             }
         }
 
@@ -166,7 +139,7 @@
         }
 
         .verse-section {
-            padding: 1.2rem 0;
+            padding: 3rem 0 2rem 0;
             max-width: 800px;
             margin: 0 auto;
         }
@@ -305,7 +278,7 @@
 
       .yt-container {
         max-width: 800px;
-        margin-top: 10px;
+        margin-top: 5px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -353,7 +326,6 @@
       /* Mobile Responsive */
       @media (max-width: 768px) {
         .yt-container {
-            padding: 1.2rem 0;
             margin: 0px 10px;
         }
         .yt-video-container {
@@ -440,20 +412,33 @@
             transform: translateY(-50%);
         }*/
       /* Parent container styling */
-      #notes-container {
-        display: none;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-      }
-
-       #notes-container.active {
+        #notes-container {
             display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+
+            /* Initially hidden */
+            opacity: 0;
+            transform: translateY(-10px);
+            max-height: 0;
+            overflow: hidden;
+            padding: 0; /* Prevent extra space */
+
+            /* Smooth transition */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, max-height 0.5s ease-in-out, padding 0.3s ease-in-out;
+        }
+
+        #notes-container.active {
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 500px; /* Adjust as needed */
+            padding: 20px; /* Restore padding when active */
         }
 
 
@@ -778,7 +763,7 @@
 
          .books-header {
             text-align: center;
-            padding-top: 2rem;
+            padding: 2rem 0 0.5rem 0;
         }
 
         .books-header h1 {
@@ -1102,7 +1087,6 @@
                 /* About Us Section */
         .about-us {
             padding: 40px 20px;
-
         }
 
         .about-container {
@@ -1120,6 +1104,11 @@
             background: #ddd;
             border-radius: 15px;
             overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            object-fit: fill;
         }
 
         .about-content {
@@ -1171,6 +1160,10 @@
 
             .about-container {
                 grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                padding: 0 20px;
             }
 
         }
@@ -1779,24 +1772,26 @@
 
 <body>
 
-        <div class="navbar">
-            <div class="logo-container" >
-                <button class="navbar-toggle" id="toggleButton">&#9776;</button>
-                <div class="logo" >
-                    <img src="https://jcmandir.com/media/images/church.jpg" alt="Logo">
-                </div>
-                <h1 class="site-title">Care &amp; Share</h1>
+    <div class="navbar">
+        <div class="logo-container" >
+            <button class="navbar-toggle" id="toggleButton">&#9776;</button>
+            <div class="logo" >
+                <img src="https://jcmandir.com/media/images/church.jpg" alt="Logo">
             </div>
+            <h1 class="site-title">Care &amp; Share</h1>
         </div>
+    </div>
 
-         <div class="side-panel" id="sidePanel">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Contact</a>
-        </div>
+     <div class="side-panel" id="sidePanel">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    
     <div class="content" id="content">
-
 
             <!-- Verse component -->
         <main class="background-gray">
@@ -2303,7 +2298,7 @@
         <section class="about-us background-gray">
             <div class="about-container" >
                 <div class="about-image" >
-                    <img src="/api/placeholder/600/400" alt="About Us">
+                    <img src="https://images.pexels.com/photos/267559/pexels-photo-267559.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="About Us">
                 </div>
                 <div class="about-content" >
                     <h2>About Us</h2>
@@ -2325,17 +2320,28 @@
                     </div>
                 </div>
             </div>
-        </section>
-       
-            
+        </section>         
     </div>
 
         <!-- Navbar Toggle -->
     <script>
         $(document).ready(function() {
-            $('#toggleButton').click(function() {
+            // Toggle side panel and overlay
+            $('#toggleButton').click(function(event) {
                 $('#sidePanel').toggleClass('open');
-                $('#content').toggleClass('shift');
+                $('#overlay').toggleClass('active');
+                event.stopPropagation(); // Prevents immediate closing when button is clicked
+            });
+
+            // Prevent closing when clicking inside the side panel
+            $('#sidePanel').click(function(event) {
+                event.stopPropagation();
+            });
+
+            // Close side panel when clicking anywhere else on the document
+            $(document).click(function() {
+                $('#sidePanel').removeClass('open');
+                $('#overlay').removeClass('active');
             });
         });
     </script>
