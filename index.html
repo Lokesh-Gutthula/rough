@@ -6,6 +6,7 @@
     <title>Profile System</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         * {
             margin: 0;
@@ -35,11 +36,14 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: #2563eb;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .profile-icon {
-            width: 40px;
-            height: 40px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             cursor: pointer;
             object-fit: cover;
@@ -59,7 +63,9 @@
         }
 
         .dropdown a {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             padding: 12px 16px;
             text-decoration: none;
             color: #1f2937;
@@ -86,13 +92,36 @@
             margin-bottom: 2rem;
         }
 
-        h2 {
-            color: #1f2937;
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 2rem;
-            font-size: 1.75rem;
-            border-bottom: 2px solid #e5e7eb;
             padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
         }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #1f2937;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .section-divider {
+            font-size: 1.25rem;
+            color: #4b5563;
+            font-weight: 600;
+            margin: 2.5rem 0 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
 
         .form-row {
             display: flex;
@@ -109,8 +138,26 @@
             flex: 0 0 100%;
         }
 
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+
+        .input-with-icon input,
+        .input-with-icon select,
+        .input-with-icon textarea {
+            padding-left: 2.5rem !important;
+        }
+
         label {
-            display: block;
+/*            display: block;*/
             margin-bottom: 0.5rem;
             color: #4b5563;
             font-weight: 500;
@@ -127,7 +174,7 @@
             border: 1px solid #d1d5db;
             border-radius: 6px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
             background-color: #fff;
         }
 
@@ -139,6 +186,13 @@
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        input[disabled],
+        select[disabled],
+        textarea[disabled] {
+            background-color: #f8fafc;
+            cursor: not-allowed;
         }
 
         .profile-image-container {
@@ -217,6 +271,9 @@
         }
 
         .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             background: #2563eb;
             color: white;
             padding: 0.75rem 1.5rem;
@@ -230,6 +287,14 @@
 
         .btn:hover {
             background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
         }
 
         .form-actions {
@@ -261,111 +326,189 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">MyProfile</div>
+        <div class="logo">
+            MyProfile
+        </div>
         <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" alt="Profile" class="profile-icon" id="profileIcon">
         <div class="dropdown" id="dropdown">
-            <a href="#" class="profile-link">Profile</a>
-            <a href="#" class="notifications-link">Notifications</a>
-            <a href="#" class="logout-link">Logout</a>
+            <a href="#" class="profile-link">
+                <i data-lucide="user"></i>
+                Profile
+            </a>
+            <a href="#" class="notifications-link">
+                <i data-lucide="bell"></i>
+                Notifications
+            </a>
+            <a href="#" class="logout-link">
+                <i data-lucide="log-out"></i>
+                Logout
+            </a>
         </div>
     </nav>
 
     <div class="main-content">
         <div class="profile-section" id="profileSection">
-            <h2>Profile Information</h2>
+            <div class="section-header">
+                <div class="section-title">
+                    Profile Information
+                </div>
+                <button class="btn" id="editProfileBtn">
+                    <i data-lucide="edit"></i>
+                    Edit 
+                </button>
+                <button class="btn hidden" id="saveProfileBtn">
+                    <i data-lucide="save"></i>
+                    Save Changes
+                </button>
+            </div>
+
             <div class="profile-image-container">
                 <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" alt="Profile Preview" class="profile-image-preview" id="profilePreview">
                 <input type="file" id="profileImage" accept="image/*" style="display: none;">
-                <button class="btn" onclick="document.getElementById('profileImage').click()">Change Photo</button>
+                <button class="btn" onclick="document.getElementById('profileImage').click()">
+                    <i data-lucide="camera"></i>
+                    Change Photo
+                </button>
             </div>
+
             <form id="profileForm">
+                <div class="section-divider">
+                    <i data-lucide="user"></i>
+                    Personal Information
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
+                            <i data-lucide="user"></i>
                         <label for="name">Full Name</label>
-                        <input type="text" id="name" required>
+                        <div class="input-with-icon">
+                            <input type="text" id="name" required disabled>
+                        </div>
                     </div>
                     <div class="form-group">
+                            <i data-lucide="mail"></i>
                         <label for="email">Email</label>
-                        <input type="email" id="email" required>
+                        <div class="input-with-icon">
+                            <input type="email" id="email" required disabled>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
+                            <i data-lucide="calendar"></i>
                         <label for="baptismDate">Baptism Date</label>
-                        <input type="date" id="baptismDate">
+                        <div class="input-with-icon">
+                            <input type="date" id="baptismDate" disabled>
+                        </div>
                     </div>
                     <div class="form-group">
+                            <i data-lucide="calendar-check"></i>
                         <label for="entranceDate">Entrance Date</label>
-                        <input type="date" id="entranceDate">
+                        <div class="input-with-icon">
+                            <input type="date" id="entranceDate" disabled>
+                        </div>
                     </div>
                     <div class="form-group">
+                            <i data-lucide="calendar-days"></i>
                         <label for="age">Age</label>
-                        <input type="text" id="age" required>
+                        <div class="input-with-icon">
+                            <input type="text" id="age" required disabled>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group full-width">
+                            <i data-lucide="map-pin"></i>
                         <label for="address">Address</label>
-                        <textarea id="address" rows="3" required></textarea>
+                        <div class="input-with-icon">
+                            <textarea id="address" rows="3" required disabled></textarea>
+                        </div>
                     </div>
+                </div>
+
+                <div class="section-divider">
+                    <i data-lucide="briefcase"></i>
+                    Professional Information
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
+                            <i data-lucide="briefcase"></i>
                         <label for="employmentStatus">Employment Status</label>
-                        <select id="employmentStatus" required>
-                            <option value="employee">Employee</option>
-                            <option value="student">Student</option>
-                        </select>
+                        <div class="input-with-icon">
+                            <select id="employmentStatus" required disabled>
+                                <option value="employee">Employee</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
+                            <i data-lucide="droplet"></i>
                         <label for="bloodGroup">Blood Group</label>
-                        <select id="bloodGroup" required>
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-                        </select>
+                        <div class="input-with-icon">
+                            <select id="bloodGroup" required disabled>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-row employee-fields">
                     <div class="form-group">
+                            <i data-lucide="building"></i>
                         <label for="companyName">Company Name</label>
-                        <input type="text" id="companyName">
+                        <div class="input-with-icon">
+                            <input type="text" id="companyName" disabled>
+                        </div>
                     </div>
                     <div class="form-group">
+                            <i data-lucide="map"></i>
                         <label for="companyLocation">Company Location</label>
-                        <input type="text" id="companyLocation">
+                        <div class="input-with-icon">
+                            <input type="text" id="companyLocation" disabled>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-row student-fields hidden">
                     <div class="form-group">
+                            <i data-lucide="graduation-cap"></i>
                         <label for="collegeName">College Name</label>
-                        <input type="text" id="collegeName">
+                        <div class="input-with-icon">
+                            <input type="text" id="collegeName" disabled>
+                        </div>
                     </div>
                     <div class="form-group">
+                            <i data-lucide="map"></i>
                         <label for="collegeLocation">College Location</label>
-                        <input type="text" id="collegeLocation">
+                        <div class="input-with-icon">
+                            <input type="text" id="collegeLocation" disabled>
+                        </div>
                     </div>
+                </div>
+
+                <div class="section-divider">
+                    <i data-lucide="info"></i>
+                    Additional Information
                 </div>
 
                 <div class="form-row">
                     <div class="form-group full-width">
+                            <i data-lucide="file-text"></i>
                         <label for="about">About</label>
-                        <textarea id="about" rows="4"></textarea>
+                        <div class="input-with-icon">
+                            <textarea id="about" rows="4" disabled></textarea>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -401,6 +544,9 @@
 
     <script>
         $(document).ready(function() {
+            // Initialize Lucide icons
+            lucide.createIcons();
+
             // Profile Icon Dropdown
             $('#profileIcon').click(function(e) {
                 e.stopPropagation();
@@ -422,6 +568,21 @@
                 e.preventDefault();
                 $('#profileSection').addClass('hidden');
                 $('#notificationsSection').removeClass('hidden');
+            });
+
+            // Edit Profile Toggle
+            $('#editProfileBtn').click(function() {
+                $(this).addClass('hidden');
+                $('#saveProfileBtn').removeClass('hidden');
+                $('#profileForm input, #profileForm select, #profileForm textarea').prop('disabled', false);
+            });
+
+            $('#saveProfileBtn').click(function() {
+                $(this).addClass('hidden');
+                $('#editProfileBtn').removeClass('hidden');
+                $('#profileForm input, #profileForm select, #profileForm textarea').prop('disabled', true);
+                // Add your save logic here
+                alert('Profile updated successfully!');
             });
 
             // Employment Status Toggle
@@ -446,23 +607,14 @@
                 }
             });
 
-            // Form Submission
-            $('#profileForm').submit(function(e) {
-                e.preventDefault();
-                // Add your form submission logic here
-                alert('Profile updated successfully!');
-            });
-
             // Notification Settings
             $('#saveNotifications').click(function() {
-                // Add your notification settings save logic here
                 alert('Notification preferences saved!');
             });
 
             // Logout
             $('.logout-link').click(function(e) {
                 e.preventDefault();
-                // Add your logout logic here
                 alert('Logged out successfully!');
             });
         });
