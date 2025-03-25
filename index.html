@@ -123,6 +123,7 @@
             font-size: 1.5rem;
             padding: 0.5rem 2rem;
             border-radius: 25px;
+            margin-top: -1.5rem;
             margin-bottom: 0.5rem;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -208,50 +209,35 @@
         }
 
         @media (max-width: 768px) {
-            .winners-container {
-                flex-wrap: wrap;
-                gap: 2rem; /* Increased gap for better spacing */
-                padding: 1rem;
-            }
-            .winner {
-                flex: 0 0 45%; /* Two items per row */
-                max-width: 200px; /* Increased from previous */
-            }
+
             .profile-image {
                 max-width: 180px; /* Larger profile images */
-                margin-bottom: 1rem;
+                margin-bottom: 0.5rem;
             }
             .college {
                 max-width: 180px;
-                font-size: 1.2rem; /* Increased font size */
+                font-size: 0.7rem; /* Increased font size */
             }
             .name {
-                font-size: 1.4rem; /* Increased font size */
-                margin: 0.8rem 0;
+                font-size: 0.8rem; /* Increased font size */
             }
-            .amount {
-                font-size: 1.5rem; /* Increased font size */
-                padding: 0.6rem 2rem;
-            }
+
+            .amount { font-size: 0.8rem; }
         }
 
         @media (max-width: 480px) {
-            .winner {
-                flex: 0 0 100%; /* One item per row on very small screens */
-                max-width: 250px;
-            }
             .profile-image {
-                max-width: 220px; /* Even larger for smallest screens */
+                max-width: 150px; /* Even larger for smallest screens */
             }
             .college {
                 max-width: 220px;
-                font-size: 1.3rem;
+                font-size: 0.6rem;
             }
             .name {
-                font-size: 1.6rem;
+                font-size: 0.8rem;
             }
             .amount {
-                font-size: 1.6rem;
+                font-size: 0.7rem;
             }
             h1 {
                 font-size: 2.5rem;
