@@ -3,620 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <title>Top Winners From RGUKT</title>
     <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #FFD700;
+            --text-color: #333;
+            --background-color: #f8f9fa;
+            --circle-size: 250px;  /* Updated max size */
+            --pill-height: 50px;
+            --animation-duration: 0.8s;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #f5f7fa;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
         }
 
-        .navbar {
-            background: #ffffff;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
+        .container {
             width: 100%;
-            top: 0;
-            z-index: 1000;
+            max-width: 1400px; /* Increased to accommodate 5 profiles */
+            margin: 0 auto;
+            text-align: center;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #2563eb;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .header {
+            margin-bottom: 3rem;
+            animation: fadeInDown var(--animation-duration) ease-out;
         }
 
-        .profile-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
-            object-fit: cover;
-            border: 2px solid #2563eb;
+        h1 {
+            color: var(--primary-color);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
         }
 
-        .dropdown {
+        h1 span {
+            color: #e0c126;
+        }
+
+        h1::after {
+            content: '';
             position: absolute;
-            top: 70px;
-            right: 2rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 200px;
-            display: none;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .winners-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem; /* Increased gap for better visibility */
+            margin-bottom: 3rem;
+            background-color: rgba(0, 71, 171, 0.05); /* Pale background */
+            padding: 2rem;
+            border-radius: 10px;
+            flex-wrap: nowrap; /* Keep all 5 in one line */
+        }
+
+        .winner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: popIn var(--animation-duration) ease-out forwards;
+            opacity: 0;
+            transform: scale(0.8);
+            flex: 0 0 20%; /* Equal width for all winners */
+            max-width: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .winner:nth-child(1) { animation-delay: 0.1s; }
+        .winner:nth-child(2) { animation-delay: 0.2s; }
+        .winner:nth-child(3) { animation-delay: 0.3s; }
+        .winner:nth-child(4) { animation-delay: 0.4s; }
+        .winner:nth-child(5) { animation-delay: 0.5s; }
+
+        .profile-image {
+            width: 100%;
+            max-width: 250px;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+/*            margin-bottom: 0.5rem;*/
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 5px solid #fff;
+        }
+
+        .profile-image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .amount {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-weight: bold;
+            font-size: 1.5rem;
+            padding: 0.5rem 2rem;
+            border-radius: 25px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
             overflow: hidden;
         }
 
-        .dropdown a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 12px 16px;
-            text-decoration: none;
-            color: #1f2937;
-            transition: background 0.3s;
-        }
-
-        .dropdown a:hover {
-            background: #f3f4f6;
-        }
-
-        .main-content {
-            margin-top: 80px;
-            padding: 2rem;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .profile-section, .notifications-section {
-            background: white;
-            border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: #1f2937;
-            font-size: 1.75rem;
-            font-weight: 600;
-        }
-
-        .section-divider {
-            font-size: 1.25rem;
-            color: #4b5563;
-            font-weight: 600;
-            margin: 2.5rem 0 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f1f5f9;
-        }
-
-
-        .form-row {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .form-group.full-width {
-            flex: 0 0 100%;
-        }
-
-        .input-with-icon {
-            position: relative;
-        }
-
-        .input-with-icon i {
+        .amount::after {
+            content: '';
             position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6b7280;
-        }
-
-        .input-with-icon input,
-        .input-with-icon select,
-        .input-with-icon textarea {
-            padding-left: 2.5rem !important;
-        }
-
-        label {
-/*            display: block;*/
-            margin-bottom: 0.5rem;
-            color: #4b5563;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        input[type="text"],
-        input[type="date"],
-        input[type="email"],
-        textarea,
-        select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background-color: #fff;
-        }
-
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        input[type="email"]:focus,
-        textarea:focus,
-        select:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-        }
-
-        input[disabled],
-        select[disabled],
-        textarea[disabled] {
-            background-color: #f8fafc;
-            cursor: not-allowed;
-        }
-
-        .profile-image-container {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 2px dashed #e2e8f0;
-        }
-
-        .profile-image-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1.5rem;
-            border: 3px solid #2563eb;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .notification-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.25rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            background: #f8fafc;
-        }
-
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.4) 50%, 
+                rgba(255,255,255,0) 100%);
+            animation: shimmer 2s infinite;
         }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
+        .college {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 250px;
         }
 
-        input:checked + .slider {
-            background-color: #2563eb;
+        .name {
+            color: var(--text-color);
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+            font-weight: 600;
         }
 
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #2563eb;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-secondary {
-            background: #6b7280;
-        }
-
-        .btn-secondary:hover {
-            background: #4b5563;
-        }
-
-        .form-actions {
+        .footer {
             margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid #e5e7eb;
-            text-align: right;
         }
 
-        .hidden {
-            display: none;
+        .footer h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 2rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1400px) {
+            .winner {
+                flex: 0 0 19%;
+            }
+            .profile-image {
+                max-width: 220px;
+            }
+            .college {
+                max-width: 220px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .profile-image {
+                max-width: 180px;
+            }
+            .college {
+                max-width: 180px;
+            }
+            .amount {
+                font-size: 1.3rem;
+                padding: 0.4rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .profile-image {
+                max-width: 150px;
+            }
+            .college {
+                max-width: 150px;
+                font-size: 1rem;
+            }
+            .name {
+                font-size: 1.1rem;
+            }
+            .amount {
+                font-size: 1.1rem;
+            }
         }
 
         @media (max-width: 768px) {
-            .form-row {
-                flex-direction: column;
-                gap: 1rem;
+            .winners-container {
+                flex-wrap: wrap; /* Allow wrapping on very small screens */
             }
-
-            .main-content {
-                padding: 1rem;
+            .winner {
+                flex: 0 0 30%;
             }
-
-            .profile-section, .notifications-section {
-                padding: 1.5rem;
+            .profile-image {
+                max-width: 150px;
+            }
+            .college {
+                max-width: 120px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">
-            MyProfile
+    <div class="container">
+        <div class="header">
+            <h1>Top <span>Winners</span> From RGUKT</h1>
         </div>
-        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" alt="Profile" class="profile-icon" id="profileIcon">
-        <div class="dropdown" id="dropdown">
-            <a href="#" class="profile-link">
-                <i data-lucide="user"></i>
-                Profile
-            </a>
-            <a href="#" class="notifications-link">
-                <i data-lucide="bell"></i>
-                Notifications
-            </a>
-            <a href="#" class="logout-link">
-                <i data-lucide="log-out"></i>
-                Logout
-            </a>
+        
+        <div class="winners-container" id="winners-container">
+            <!-- Winners will be dynamically inserted here -->
         </div>
-    </nav>
-
-    <div class="main-content">
-        <div class="profile-section" id="profileSection">
-            <div class="section-header">
-                <div class="section-title">
-                    Profile Information
-                </div>
-                <button class="btn" id="editProfileBtn">
-                    <i data-lucide="edit"></i>
-                    Edit 
-                </button>
-                <button class="btn hidden" id="saveProfileBtn">
-                    <i data-lucide="save"></i>
-                    Save Changes
-                </button>
-            </div>
-
-            <div class="profile-image-container">
-                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=150&h=150" alt="Profile Preview" class="profile-image-preview" id="profilePreview">
-                <input type="file" id="profileImage" accept="image/*" style="display: none;">
-                <button class="btn" onclick="document.getElementById('profileImage').click()">
-                    <i data-lucide="camera"></i>
-                    Change Photo
-                </button>
-            </div>
-
-            <form id="profileForm">
-                <div class="section-divider">
-                    <i data-lucide="user"></i>
-                    Personal Information
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                            <i data-lucide="user"></i>
-                        <label for="name">Full Name</label>
-                        <div class="input-with-icon">
-                            <input type="text" id="name" required disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <i data-lucide="mail"></i>
-                        <label for="email">Email</label>
-                        <div class="input-with-icon">
-                            <input type="email" id="email" required disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                            <i data-lucide="calendar"></i>
-                        <label for="baptismDate">Baptism Date</label>
-                        <div class="input-with-icon">
-                            <input type="date" id="baptismDate" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <i data-lucide="calendar-check"></i>
-                        <label for="entranceDate">Entrance Date</label>
-                        <div class="input-with-icon">
-                            <input type="date" id="entranceDate" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <i data-lucide="calendar-days"></i>
-                        <label for="age">Age</label>
-                        <div class="input-with-icon">
-                            <input type="text" id="age" required disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group full-width">
-                            <i data-lucide="map-pin"></i>
-                        <label for="address">Address</label>
-                        <div class="input-with-icon">
-                            <textarea id="address" rows="3" required disabled></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-divider">
-                    <i data-lucide="briefcase"></i>
-                    Professional Information
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                            <i data-lucide="briefcase"></i>
-                        <label for="employmentStatus">Employment Status</label>
-                        <div class="input-with-icon">
-                            <select id="employmentStatus" required disabled>
-                                <option value="employee">Employee</option>
-                                <option value="student">Student</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <i data-lucide="droplet"></i>
-                        <label for="bloodGroup">Blood Group</label>
-                        <div class="input-with-icon">
-                            <select id="bloodGroup" required disabled>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row employee-fields">
-                    <div class="form-group">
-                            <i data-lucide="building"></i>
-                        <label for="companyName">Company Name</label>
-                        <div class="input-with-icon">
-                            <input type="text" id="companyName" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <i data-lucide="map"></i>
-                        <label for="companyLocation">Company Location</label>
-                        <div class="input-with-icon">
-                            <input type="text" id="companyLocation" disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row student-fields hidden">
-                    <div class="form-group">
-                            <i data-lucide="graduation-cap"></i>
-                        <label for="collegeName">College Name</label>
-                        <div class="input-with-icon">
-                            <input type="text" id="collegeName" disabled>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                            <i data-lucide="map"></i>
-                        <label for="collegeLocation">College Location</label>
-                        <div class="input-with-icon">
-                            <input type="text" id="collegeLocation" disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-divider">
-                    <i data-lucide="info"></i>
-                    Additional Information
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group full-width">
-                            <i data-lucide="file-text"></i>
-                        <label for="about">About</label>
-                        <div class="input-with-icon">
-                            <textarea id="about" rows="4" disabled></textarea>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="notifications-section hidden" id="notificationsSection">
-            <h2>Notification Settings</h2>
-            <div class="notification-item">
-                <span>Daily Verse</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="notification-item">
-                <span>Quiz</span>
-                <label class="toggle-switch">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="notification-item">
-                <span>Meet</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div class="form-actions">
-                <button class="btn" id="saveNotifications">Save Preferences</button>
-            </div>
+        
+        <div class="footer">
+            <h2>It's your turn from your College</h2>
         </div>
     </div>
 
     <script>
-        $(document).ready(function() {
-            // Initialize Lucide icons
-            lucide.createIcons();
-
-            // Profile Icon Dropdown
-            $('#profileIcon').click(function(e) {
-                e.stopPropagation();
-                $('#dropdown').fadeToggle(200);
+        document.addEventListener('DOMContentLoaded', function() {
+            const participants = [
+                { name: "Rahul Sharma", amount: 100, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/1334945/pexels-photo-1334945.jpeg?auto=compress&cs=tinysrgb&w=600" },
+                { name: "Priya Patel", amount: 200, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/3030332/pexels-photo-3030332.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
+                { name: "Amit Kumar", amount: 500, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/59576/pexels-photo-59576.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
+                { name: "Sneha Reddy", amount: 200, college: "IIIT Nuz CSE", image: "/placeholder.svg?height=180&width=180" },
+                { name: "Vikram Singh", amount: 100, college: "IIIT Nuz CSE", image: "/placeholder.svg?height=180&width=180" },
+                { name: "Neha Gupta", amount: 150, college: "IIIT Nuz CSE", image: "/placeholder.svg?height=180&width=180" },
+                { name: "Rajesh Verma", amount: 300, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/1334945/pexels-photo-1334945.jpeg?auto=compress&cs=tinysrgb&w=600" },
+                { name: "Ananya Desai", amount: 250, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/6937934/pexels-photo-6937934.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
+                { name: "Karthik Rao", amount: 400, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/1616015/pexels-photo-1616015.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" },
+                { name: "Divya Sharma", amount: 350, college: "IIIT Nuz CSE", image: "https://images.pexels.com/photos/3030332/pexels-photo-3030332.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" }
+            ];
+            
+            const topWinners = participants.sort((a, b) => b.amount - a.amount).slice(0, 5);
+            const winnersContainer = document.getElementById('winners-container');
+            
+            topWinners.forEach((winner, index) => {
+                const winnerElement = document.createElement('div');
+                winnerElement.className = 'winner';
+                
+                winnerElement.innerHTML = `
+                    <img src="${winner.image}" alt="${winner.name}" class="profile-image">
+                    <div class="amount">${winner.amount}</div>
+                    <div class="name">${winner.name}</div>
+                    <div class="college">${winner.college}</div>
+                `;
+                
+                winnersContainer.appendChild(winnerElement);
+                
+                const profileImage = winnerElement.querySelector('.profile-image');
+                profileImage.addEventListener('click', function() {
+                    const amount = winnerElement.querySelector('.amount');
+                    
+                     // Flash effect
+                    this.style.transform = 'scale(1.1)';
+                    amount.style.transform = 'scale(1.1)';
+                    
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        amount.style.transform = '';
+                    }, 300);
+                });
             });
-
-            $(document).click(function() {
-                $('#dropdown').fadeOut(200);
-            });
-
-            // Navigation
-            $('.profile-link').click(function(e) {
-                e.preventDefault();
-                $('#profileSection').removeClass('hidden');
-                $('#notificationsSection').addClass('hidden');
-            });
-
-            $('.notifications-link').click(function(e) {
-                e.preventDefault();
-                $('#profileSection').addClass('hidden');
-                $('#notificationsSection').removeClass('hidden');
-            });
-
-            // Edit Profile Toggle
-            $('#editProfileBtn').click(function() {
-                $(this).addClass('hidden');
-                $('#saveProfileBtn').removeClass('hidden');
-                $('#profileForm input, #profileForm select, #profileForm textarea').prop('disabled', false);
-            });
-
-            $('#saveProfileBtn').click(function() {
-                $(this).addClass('hidden');
-                $('#editProfileBtn').removeClass('hidden');
-                $('#profileForm input, #profileForm select, #profileForm textarea').prop('disabled', true);
-                // Add your save logic here
-                alert('Profile updated successfully!');
-            });
-
-            // Employment Status Toggle
-            $('#employmentStatus').change(function() {
-                if ($(this).val() === 'employee') {
-                    $('.employee-fields').removeClass('hidden');
-                    $('.student-fields').addClass('hidden');
-                } else {
-                    $('.employee-fields').addClass('hidden');
-                    $('.student-fields').removeClass('hidden');
-                }
-            });
-
-            // Profile Image Preview
-            $('#profileImage').change(function(e) {
-                if (e.target.files && e.target.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        $('#profilePreview').attr('src', e.target.result);
+            
+            function revealOnScroll() {
+                const winners = document.querySelectorAll('.winner');
+                winners.forEach(winner => {
+                    const winnerTop = winner.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (winnerTop < windowHeight - 100) {
+                        winner.style.opacity = '1';
+                        winner.style.transform = 'scale(1)';
                     }
-                    reader.readAsDataURL(e.target.files[0]);
-                }
-            });
-
-            // Notification Settings
-            $('#saveNotifications').click(function() {
-                alert('Notification preferences saved!');
-            });
-
-            // Logout
-            $('.logout-link').click(function(e) {
-                e.preventDefault();
-                alert('Logged out successfully!');
-            });
+                });
+            }
+            
+            revealOnScroll();
+            window.addEventListener('scroll', revealOnScroll);
         });
     </script>
 </body>
