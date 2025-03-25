@@ -10,7 +10,7 @@
             --secondary-color: #FFD700;
             --text-color: #333;
             --background-color: #f8f9fa;
-            --circle-size: 250px;  /* Updated max size */
+            --circle-size: 250px;
             --pill-height: 50px;
             --animation-duration: 0.8s;
         }
@@ -36,7 +36,7 @@
 
         .container {
             width: 100%;
-            max-width: 1400px; /* Increased to accommodate 5 profiles */
+            max-width: 1400px;
             margin: 0 auto;
             text-align: center;
         }
@@ -74,12 +74,12 @@
         .winners-container {
             display: flex;
             justify-content: center;
-            gap: 1rem; /* Increased gap for better visibility */
+            gap: 1rem;
             margin-bottom: 3rem;
-            background-color: rgba(0, 71, 171, 0.05); /* Pale background */
+            background-color: rgba(0, 71, 171, 0.05);
             padding: 2rem;
             border-radius: 10px;
-            flex-wrap: nowrap; /* Keep all 5 in one line */
+            flex-wrap: nowrap;
         }
 
         .winner {
@@ -89,7 +89,7 @@
             animation: popIn var(--animation-duration) ease-out forwards;
             opacity: 0;
             transform: scale(0.8);
-            flex: 0 0 20%; /* Equal width for all winners */
+            flex: 0 0 20%;
             max-width: 250px;
             margin-bottom: 2rem;
         }
@@ -105,7 +105,6 @@
             max-width: 250px;
             aspect-ratio: 1/1;
             border-radius: 50%;
-/*            margin-bottom: 0.5rem;*/
             object-fit: cover;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -174,91 +173,91 @@
 
         /* Animations */
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         @keyframes shimmer {
-            0% {
-                left: -100%;
-            }
-            100% {
-                left: 100%;
-            }
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         /* Responsive styles */
         @media (max-width: 1400px) {
-            .winner {
-                flex: 0 0 19%;
-            }
-            .profile-image {
-                max-width: 220px;
-            }
-            .college {
-                max-width: 220px;
-            }
+            .winner { flex: 0 0 19%; }
+            .profile-image { max-width: 220px; }
+            .college { max-width: 220px; }
         }
 
         @media (max-width: 1200px) {
-            .profile-image {
-                max-width: 180px;
-            }
-            .college {
-                max-width: 180px;
-            }
-            .amount {
-                font-size: 1.3rem;
-                padding: 0.4rem 1.5rem;
-            }
+            .profile-image { max-width: 180px; }
+            .college { max-width: 180px; }
+            .amount { font-size: 1.3rem; padding: 0.4rem 1.5rem; }
         }
 
         @media (max-width: 992px) {
-            .profile-image {
-                max-width: 150px;
-            }
-            .college {
-                max-width: 150px;
-                font-size: 1rem;
-            }
-            .name {
-                font-size: 1.1rem;
-            }
-            .amount {
-                font-size: 1.1rem;
-            }
+            .profile-image { max-width: 150px; }
+            .college { max-width: 150px; font-size: 1rem; }
+            .name { font-size: 1.1rem; }
+            .amount { font-size: 1.1rem; }
         }
 
         @media (max-width: 768px) {
             .winners-container {
-                flex-wrap: wrap; /* Allow wrapping on very small screens */
+                flex-wrap: wrap;
+                gap: 2rem; /* Increased gap for better spacing */
+                padding: 1rem;
             }
             .winner {
-                flex: 0 0 30%;
+                flex: 0 0 45%; /* Two items per row */
+                max-width: 200px; /* Increased from previous */
             }
             .profile-image {
-                max-width: 150px;
+                max-width: 180px; /* Larger profile images */
+                margin-bottom: 1rem;
             }
             .college {
-                max-width: 120px;
-                font-size: 0.9rem;
+                max-width: 180px;
+                font-size: 1.2rem; /* Increased font size */
+            }
+            .name {
+                font-size: 1.4rem; /* Increased font size */
+                margin: 0.8rem 0;
+            }
+            .amount {
+                font-size: 1.5rem; /* Increased font size */
+                padding: 0.6rem 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .winner {
+                flex: 0 0 100%; /* One item per row on very small screens */
+                max-width: 250px;
+            }
+            .profile-image {
+                max-width: 220px; /* Even larger for smallest screens */
+            }
+            .college {
+                max-width: 220px;
+                font-size: 1.3rem;
+            }
+            .name {
+                font-size: 1.6rem;
+            }
+            .amount {
+                font-size: 1.6rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .footer h2 {
+                font-size: 1.8rem;
             }
         }
     </style>
@@ -312,11 +311,8 @@
                 const profileImage = winnerElement.querySelector('.profile-image');
                 profileImage.addEventListener('click', function() {
                     const amount = winnerElement.querySelector('.amount');
-                    
-                     // Flash effect
                     this.style.transform = 'scale(1.1)';
                     amount.style.transform = 'scale(1.1)';
-                    
                     setTimeout(() => {
                         this.style.transform = '';
                         amount.style.transform = '';
@@ -329,7 +325,6 @@
                 winners.forEach(winner => {
                     const winnerTop = winner.getBoundingClientRect().top;
                     const windowHeight = window.innerHeight;
-                    
                     if (winnerTop < windowHeight - 100) {
                         winner.style.opacity = '1';
                         winner.style.transform = 'scale(1)';
